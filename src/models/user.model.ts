@@ -1,12 +1,10 @@
-import bcrypt from 'bcrypt'
-import config from 'config'
+import argon2 from "argon2"
 import log from '../utils/logger'
 import { prop, getModelForClass, DocumentType, pre, modelOptions, Severity, index } from '@typegoose/typegoose'
 
 @pre<User>('save', function() {
   if (this.isModified('password')) { 
-    const salt = bcrypt.genSaltSync(config.get<number>('saltWorkFactor'))
-    const hash = bcrypt.hashSync(this.password, salt)
+    const hash = argon2.hash(this.password)
     this.password = hash
 
     return
@@ -42,9 +40,9 @@ export class User {
 
   verifyPassword(this: DocumentType<User>, candidate_password: string) {
     try {
-      return bcrypt.compareSync(candidate_password, this.password)
+      return argon2.verify(this.password, candidate_password)
     } catch(err) {
-      log.error('Failed to validate password')
+      log.error(err, 'Failed to validate password')
       return false
     }
   }
