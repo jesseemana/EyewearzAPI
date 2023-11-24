@@ -15,6 +15,12 @@ import { prop, getModelForClass, DocumentType, pre, modelOptions, Severity, inde
 
 @index({ email: 1})
 
+@modelOptions({
+  options: {
+    allowMixed: Severity.ALLOW
+  }
+})
+
 export class User {
   @prop({ required: true })
   first_name: string
@@ -27,6 +33,12 @@ export class User {
 
   @prop({ required: true })
   password: string
+
+  @prop({ default: [] })
+  cart: Array<string>
+
+  @prop({ default: [] })
+  favorites: Array<string>
 
   verifyPassword(this: DocumentType<User>, candidate_password: string) {
     try {
