@@ -1,0 +1,11 @@
+{
+  "name": "opticals-server",
+  "version": "1.0.0",
+  "description": "a backend rest api for the opticals app",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesse Emana",
+  "license": "MIT"
+}
