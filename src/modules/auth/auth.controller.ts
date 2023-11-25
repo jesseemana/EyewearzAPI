@@ -39,45 +39,53 @@ export class AuthController {
 
   @httpGet('/refresh')
   async refresh(req: Request, res: Response) {
-    const cookies = req.cookies
-    if (!cookies?.refresh_token) return res.sendStatus(204)
+    try {
+      const cookies = req.cookies
+      if (!cookies?.refresh_token) return res.sendStatus(204)
 
-    const refresh_token = cookies.refresh_token as string
+      const refresh_token = cookies.refresh_token as string
 
-    const decoded = verifyToken<{ session: string }>(refresh_token, 'refreshTokenPublicKey')
-    if (!decoded) 
-      return res.status(403).send('Token not founf or is invalid!')
+      const decoded = verifyToken<{ session: string }>(refresh_token, 'refreshTokenPublicKey')
+      if (!decoded) 
+        return res.status(403).send('Token not founf or is invalid!')
 
-    const session = await this._authService.findSessionById(decoded.session)
-    if (!session) return res.status(404).send('Session not found!')
+      const session = await this._authService.findSessionById(decoded.session)
+      if (!session) return res.status(404).send('Session not found!')
 
-    const user = await this._authService.findUserById(String(session.user))
-    if (!user) return res.status(404).send('User not found!')
+      const user = await this._authService.findUserById(String(session.user))
+      if (!user) return res.status(404).send('User not found!')
 
-    const access_token = this._authService.signAccessToken(user, session)
+      const access_token = this._authService.signAccessToken(user, session)
 
-    res.status(200).send({ access_token })
+      res.status(200).send({ access_token })
+    } catch (error) {
+      return res.status(500).send('Internal server error')
+    }
   }
 
   @httpPost('/logout')
   async logout(req: Request, res: Response) {
-    const cookies = req.cookies
-    if (!cookies?.refresh_token) return res.sendStatus(204)
+    try {
+      const cookies = req.cookies
+      if (!cookies?.refresh_token) return res.sendStatus(204)
 
-    const session_id = res.locals.user.session._id as string;
+      const session_id = res.locals.user.session._id as string;
 
-    const session = await this._authService.findSessionById(session_id)
-    if (!session || !session.valid) 
-      return res.status(401).send('Session is not found or is invalid');
+      const session = await this._authService.findSessionById(session_id)
+      if (!session || !session.valid) 
+        return res.status(401).send('Session is not found or is invalid');
 
-    await this._authService.destroySession({ _id: session_id }, { valid: false })
+      await this._authService.destroySession({ _id: session_id }, { valid: false })
 
-    res.clearCookie('refresh_token', {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'none',
-    })
+      res.clearCookie('refresh_token', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'none',
+      })
 
-    res.send('User loged out successfully.')
+      res.send('User loged out successfully.')
+    } catch (error) {
+      return res.status(500).send('Internal server error')
+    }
   }
 }
