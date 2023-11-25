@@ -2,9 +2,11 @@ import argon2 from "argon2"
 import log from '../utils/logger'
 import { prop, getModelForClass, DocumentType, pre, modelOptions, Severity, index } from '@typegoose/typegoose'
 
-@pre<User>('save', function() {
+export const private_fields = ['cart', 'favorites']
+
+@pre<User>('save', async function() {
   if (this.isModified('password')) { 
-    const hash = argon2.hash(this.password)
+    const hash = await argon2.hash(this.password)
     this.password = hash
 
     return
@@ -38,9 +40,9 @@ export class User {
   @prop({ default: [] })
   favorites: Array<string>
 
-  verifyPassword(this: DocumentType<User>, candidate_password: string) {
+  async verifyPassword(this: DocumentType<User>, candidate_password: string) {
     try {
-      return argon2.verify(this.password, candidate_password)
+      return await argon2.verify(this.password, candidate_password)
     } catch(err) {
       log.error(err, 'Failed to validate password')
       return false
