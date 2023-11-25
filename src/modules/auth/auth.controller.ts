@@ -54,7 +54,7 @@ export class AuthController {
     const user = await this._authService.findUserById(String(session.user))
     if (!user) return res.status(404).send('User not found!')
 
-    const access_token = await this._authService.signAccessToken(user, session)
+    const access_token = this._authService.signAccessToken(user, session)
 
     res.status(200).send({ access_token })
   }
