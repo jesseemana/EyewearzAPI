@@ -9,6 +9,10 @@ export class UserRepository {
     return this._model.find({})
   }
 
+  async getUserByEmail(email: string) {
+    return this._model.findOne({ email })
+  }
+
   async save(data: Partial<User>) {
     return this._model.create(data)
   }
