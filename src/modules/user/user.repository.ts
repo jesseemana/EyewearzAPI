@@ -13,6 +13,10 @@ export class UserRepository {
     return this._model.findOne({ email })
   }
 
+  async getUserById(id: string) {
+    return this._model.findById(id)
+  }
+
   async save(data: Partial<User>) {
     return this._model.create(data)
   }
