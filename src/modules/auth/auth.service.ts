@@ -1,11 +1,12 @@
 import { injectable } from 'inversify'
 import { UserRepository } from '../user/user.repository'
 import { signJwt } from '../../utils/jwt'
-import { DocumentType } from "@typegoose/typegoose'
+import { DocumentType } from '@typegoose/typegoose'
 import { Session } from '../../models/session.model'
 import { User, private_fields } from '../../models/user.model'
 import { AuthRepository } from './auth.repository'
 import { FilterQuery, UpdateQuery } from 'mongoose'
+import { omit } from 'lodash'
 
 @injectable()
 export class AuthService {
@@ -26,8 +27,7 @@ export class AuthService {
   }
 
   async createSession({ user_id }: { user_id: string }) {
-    const session = this._authRepository.createSession({ user_id })
-    return session
+    return this._authRepository.createSession({ user_id })
   }
 
   async findSessionById(id: string) {
@@ -47,7 +47,7 @@ export class AuthService {
 
   signRefreshToken(session: DocumentType<Session>) {
     const refresh_token = signJwt({ session: session._id }, 'accessTokenPrivateKey', { expiresIn: '30d' })
-
+    
     return refresh_token
   }
 }
