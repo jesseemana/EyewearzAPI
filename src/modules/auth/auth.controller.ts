@@ -20,8 +20,8 @@ export class AuthController {
         return res.status(400).send('Ivalid user credentails given')
 
       const session = await this._authService.createSession({ user_id: String(user._id)})
-      const access_token = await this._authService.signAccessToken(user, session)
-      const refresh_token = await this._authService.signRefreshToken(session)
+      const access_token = this._authService.signAccessToken(user, session)
+      const refresh_token = this._authService.signRefreshToken(session)
 
       res.cookie('refresh_token', refresh_token, {
         maxAge: 30*24*60*60*1000, // 30 days
