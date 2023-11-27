@@ -1,5 +1,5 @@
 export default {
-  port: 8080,
+  port: '',
   dbUri: '',
   logLevel: 'info',
   accessTokenPrivateKey: '',
