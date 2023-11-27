@@ -16,6 +16,7 @@ export class AuthController {
     const { email, password } = req.body
     try {
       const user = await this._authService.findUserByEmail(email)
+      
       if (!user || !user.verifyPassword(password)) 
         return res.status(400).send('Ivalid user credentails given')
 
@@ -33,7 +34,7 @@ export class AuthController {
 
       res.status(200).send({ user, access_token })
     } catch (error) {
-      return res.status(500).send('Internal server error')
+      return res.status(500).send('Internal server error!')
     }
   }
 
@@ -50,16 +51,18 @@ export class AuthController {
         return res.status(403).send('Token not founf or is invalid!')
 
       const session = await this._authService.findSessionById(decoded.session)
-      if (!session) return res.status(404).send('Session not found!')
+      if (!session) 
+        return res.status(404).send('Session not found!')
 
       const user = await this._authService.findUserById(String(session.user))
-      if (!user) return res.status(404).send('User not found!')
+      if (!user) 
+        return res.status(404).send('User not found!')
 
       const access_token = this._authService.signAccessToken(user, session)
 
       res.status(200).send({ access_token })
     } catch (error) {
-      return res.status(500).send('Internal server error')
+      return res.status(500).send('Internal server error!')
     }
   }
 
@@ -72,6 +75,7 @@ export class AuthController {
       const session_id = res.locals.user.session._id as string;
 
       const session = await this._authService.findSessionById(session_id)
+
       if (!session || !session.valid) 
         return res.status(401).send('Session is not found or is invalid');
 
@@ -85,7 +89,7 @@ export class AuthController {
 
       res.send('User loged out successfully.')
     } catch (error) {
-      return res.status(500).send('Internal server error')
+      return res.status(500).send('Internal server error!')
     }
   }
 }
