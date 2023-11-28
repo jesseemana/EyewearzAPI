@@ -1,6 +1,8 @@
 import { FilterQuery, UpdateQuery } from 'mongoose'
 import SessionModel, { Session } from '../models/session.model'
+import { injectable } from 'inversify'
 
+@injectable()
 export class AuthRepository {
   private readonly _model = SessionModel
 
