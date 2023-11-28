@@ -8,6 +8,7 @@ const deserialize_user = (req: Request, res: Response, next: NextFunction) => {
     if (decoded) { res.locals.user = decoded }
     return next()
   }
+  return next()
 }
 
 export default deserialize_user
