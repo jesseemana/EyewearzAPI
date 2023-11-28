@@ -10,7 +10,7 @@ export class ReservationRepository {
     return this._model.find({})
   }
 
-  async createAppointment(data: DocumentType<Appointment>) {
+  async createAppointment(data: Partial<Appointment>) {
     return this._model.create(data)
   }
 }

@@ -15,7 +15,7 @@ export class ReservationService {
     return this._reservationRepository.getBookings()
   }
 
-  async createAppointment(data: DocumentType<Appointment>) {
+  async createAppointment(data: Partial<Appointment>) {
     return this._reservationRepository.createAppointment(data)
   }
 }
