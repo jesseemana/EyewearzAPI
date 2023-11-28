@@ -5,13 +5,13 @@ export const signJwt = (
   object: Object, 
   keyName: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey', 
   options?: jwt.SignOptions | undefined
-) => {
+): string => {
   const signingKey = Buffer.from(config.get<string>(keyName), 'base64').toString('ascii')
 
   const token = jwt.sign(object, signingKey, { 
   ...(options && options), 
   algorithm: 'RS256'
-  })
+  }) as string
 
   return token
 }
