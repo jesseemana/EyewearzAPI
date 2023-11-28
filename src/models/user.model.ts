@@ -2,7 +2,7 @@ import argon2 from "argon2"
 import log from '../utils/logger'
 import { prop, getModelForClass, DocumentType, pre, modelOptions, Severity, index } from '@typegoose/typegoose'
 
-export const private_fields = ['cart', 'favorites']
+export const private_fields = ['cart', 'favorites', 'password']
 
 @pre<User>('save', async function() {
   if (this.isModified('password')) { 
