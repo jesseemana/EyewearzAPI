@@ -2,23 +2,23 @@ import { Request, Response } from 'express'
 import { AuthService } from '../services/auth.service'
 import { controller, httpGet, httpPost } from 'inversify-express-utils'
 import { verifyToken } from '../utils/jwt'
+import { LoginInput, login_schema } from '../schema/user'
 
 @controller('/auth')
 export class AuthController {
   private readonly _authService: AuthService
 
-  constructor(_authService: AuthService) {
-    this._authService = _authService
-  }
+  constructor(_authService: AuthService) { this._authService = _authService }
 
   @httpPost('/login')
-  async login(req: Request, res: Response) {
-    const { email, password } = req.body
+  async login(req: Request<{}, {}, LoginInput>, res: Response) {
+    const { email, password } = login_schema.parse(req.body)
+    
     try {
       const user = await this._authService.findUserByEmail(email)
-      
-      if (!user || !user.verifyPassword(password)) 
+      if (!user || !user.verifyPassword(password)) {
         return res.status(400).send('Ivalid user credentails given')
+      }
 
       const session = await this._authService.createSession({ user_id: String(user._id)})
       const access_token = this._authService.signAccessToken(user, session)
@@ -40,12 +40,11 @@ export class AuthController {
 
   @httpGet('/refresh')
   async refresh(req: Request, res: Response) {
+    const cookies = req.cookies
+    if (!cookies?.refresh_token) return res.sendStatus(204)
+
     try {
-      const cookies = req.cookies
-      if (!cookies?.refresh_token) return res.sendStatus(204)
-
       const refresh_token = cookies.refresh_token as string
-
       const decoded = verifyToken<{ session: string }>(refresh_token, 'refreshTokenPublicKey')
       if (!decoded) 
         return res.status(403).send('Token not found or is invalid!')
@@ -68,16 +67,15 @@ export class AuthController {
 
   @httpPost('/logout')
   async logout(req: Request, res: Response) {
+    const cookies = req.cookies
+    if (!cookies?.refresh_token) return res.sendStatus(204)
+
     try {
-      const cookies = req.cookies
-      if (!cookies?.refresh_token) return res.sendStatus(204)
-
-      const session_id = res.locals.user.session._id as string;
-
+      const session_id = res.locals.user.session._id as string
       const session = await this._authService.findSessionById(session_id)
-
-      if (!session || !session.valid) 
-        return res.status(401).send('Session is not found or is invalid');
+      if (!session || !session.valid) {
+        return res.status(401).send('Session is not found or is invalid')
+      }
 
       await this._authService.destroySession({ _id: session_id }, { valid: false })
 

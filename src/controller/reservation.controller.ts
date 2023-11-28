@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { ReservationService } from '../services/reservation.service'
 import { controller, httpGet, httpPost } from 'inversify-express-utils'
+import { BookingInput, create_reservation } from '../schema/booking'
 
 @controller('/bookings')
 export class ReservationController {
@@ -19,8 +20,11 @@ export class ReservationController {
   }
 
   @httpPost('/create')
-  async bookAppointment(req: Request, res: Response) {
-    const data = req.body
+  async bookAppointment(
+    req: Request<{}, {}, BookingInput>, 
+    res: Response
+  ) {
+    const data = create_reservation.parse(req.body)
     try {
       const booking = await this._reservationService.createAppointment(data)
       res.send(200).send({ booking })

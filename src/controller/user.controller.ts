@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/user.service'
 import { controller, httpGet } from 'inversify-express-utils'
+import { UserInput, user_schema } from '../schema/user'
 
 @controller('/users')
 export class UserController {
@@ -19,8 +20,11 @@ export class UserController {
   }
 
   @httpGet('/register')
-  async createUserHandler (req: Request, res: Response) {
-    const data = req.body
+  async createUserHandler (
+    req: Request<{}, {}, UserInput>, 
+    res: Response
+  ) {
+    const data = user_schema.parse(req.body)
     try {
       const new_user = await this._userService.registerUser(data)
       res.status(200).send(`New user ${new_user.first_name} ${new_user.last_name} has been created.`)
