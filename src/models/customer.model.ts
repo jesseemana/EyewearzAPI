@@ -12,7 +12,7 @@ import {
 
 export const private_fields = ['cart', 'favorites', 'password']
 
-@pre<User>('save', async function() {
+@pre<Customer>('save', async function() {
   if (this.isModified('password')) { 
     const hash = await argon2.hash(this.password)
     this.password = hash
@@ -29,7 +29,7 @@ export const private_fields = ['cart', 'favorites', 'password']
   }
 })
 
-export class User {
+export class Customer {
   @prop({ required: true })
   first_name: string
 
@@ -48,7 +48,7 @@ export class User {
   @prop({ default: [] })
   favorites: Array<string>
 
-  async verifyPassword(this: DocumentType<User>, candidate_password: string) {
+  async verifyPassword(this: DocumentType<Customer>, candidate_password: string) {
     try {
       return await argon2.verify(this.password, candidate_password)
     } catch(err) {
@@ -58,6 +58,6 @@ export class User {
   }
 }
 
-const UserModel = getModelForClass(User)
+const CustomerModel = getModelForClass(Customer)
 
-export default UserModel
+export default CustomerModel

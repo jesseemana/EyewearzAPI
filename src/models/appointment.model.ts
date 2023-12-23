@@ -1,9 +1,9 @@
-import { User } from './user.model'
+import { Customer } from './customer.model'
 import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 
 export class Appointment {
-  @prop({ ref: () => User })
-  user: Ref<User>
+  @prop({ ref: () => Customer })
+  user: Ref<Customer>
 
   @prop({ required: true })
   phone: string
@@ -18,7 +18,7 @@ export class Appointment {
   reservation_data: Date
 }
 
-const AppointmentModel = getModelForClass(User, {
+const AppointmentModel = getModelForClass(Appointment, {
   schemaOptions: {
     timestamps: true
   }
