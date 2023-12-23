@@ -1,6 +1,14 @@
 import argon2 from "argon2"
 import log from '../utils/logger'
-import { prop, getModelForClass, DocumentType, pre, modelOptions, Severity, index } from '@typegoose/typegoose'
+import { 
+  pre, 
+  prop, 
+  index,
+  getModelForClass, 
+  DocumentType, 
+  modelOptions, 
+  Severity, 
+} from '@typegoose/typegoose'
 
 export const private_fields = ['cart', 'favorites', 'password']
 
@@ -8,9 +16,9 @@ export const private_fields = ['cart', 'favorites', 'password']
   if (this.isModified('password')) { 
     const hash = await argon2.hash(this.password)
     this.password = hash
-
     return
   }
+  return
 })
 
 @index({ email: 1})
@@ -28,7 +36,7 @@ export class User {
   @prop({ required: true })
   last_name: string
 
-  @prop({ lowercase: true, required:true, unique: true })
+  @prop({ lowercase: true, required: true, unique: true })
   email: string
 
   @prop({ required: true })

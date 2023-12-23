@@ -1,8 +1,8 @@
+// import { nanoid } from 'nanoid'
 import { getModelForClass, prop } from '@typegoose/typegoose'
-import { nanoid } from 'nanoid'
 
 export class Product {
-  @prop({ required: true, default: () => nanoid() })
+  @prop({ required: true })
   id: string
 
   @prop({ required: true })
@@ -12,6 +12,12 @@ export class Product {
   image: string
 
   @prop({ required: true })
+  category: string
+
+  @prop({ required: true })
+  gender: string
+
+  @prop({ required: true })
   description: string
 
   @prop({ required: true })
@@ -19,7 +25,7 @@ export class Product {
 }
 
 const ProductModel = getModelForClass(Product, {
-  SchemaOptions: {
+  schemaOptions: {
     timestamps: true
   }
 })
