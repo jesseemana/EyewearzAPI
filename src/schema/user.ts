@@ -40,13 +40,6 @@ export const login_schema = object({
     .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),"One special character")
     .min(8, "Must not be less than 8 characters.")
     .max(64, "Cannot be more than 64 characters long."),
-  confirm_password: string({
-    required_error: 'Password confirmation is required',
-  }).regex(new RegExp(".*[A-Z].*"), "One uppercase character").regex(new RegExp(".*\\d.*"), "One number")
-    .regex(new RegExp(".*[a-z].*"), "One lowercase character")
-    .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),"One special character")
-    .min(8, "Must not be less than 8 characters.")
-    .max(64, "Cannot be more than 64 characters long.")
 })
 
 export type UserInput = TypeOf<typeof user_schema>
