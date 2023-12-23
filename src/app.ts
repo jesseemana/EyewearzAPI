@@ -8,31 +8,16 @@ import deserializeuser from './middleware/deserialize-user'
 import database from './utils/connect-db'
 import log from './utils/logger'
 import config from 'config'
-
-import { Container } from 'inversify'
-import { InversifyExpressServer } from 'inversify-express-utils'
-
-import { UserRepository } from './modules/user/user.repository'
-import { UserService } from './modules/user/user.service'
-import { ProductRepository } from './modules/product/product.repository'
-import { ProductService } from './modules/product/product.service'
-import { AuthRepository } from './modules/auth/auth.repository'
-import { AuthService } from './modules/auth/auth.service'
-
-import './modules/user/user.controller'
-import './modules/product/product.controller'
-import './modules/reservation/reservation.repository'
-import './modules/auth/auth.controller'
-
-const container = new Container()
-const server = new InversifyExpressServer(container)
+import ProductsRoute from './routes/product.route'
+import AuthRoute from './routes/auth.route'
+import CustomersRoute from './routes/customer.route'
+import ReservationRoute from './routes/reservation.route'
 
 // npm i lodash
 // npm i --save-dev @types/lodash @types/jsonwebtoken
-
-const app = server.build()
-
 const PORT = config.get<number>('port')
+
+const app = express()
 
 app.use(cors({
   // configure CORS stuff here
@@ -43,19 +28,16 @@ app.use(deserializeuser)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use('/api/auth', AuthRoute)
+app.use('/api/products', ProductsRoute)
+app.use('/api/customers', CustomersRoute)
+app.use('/api/reservation', ReservationRoute)
 
 const startServer = () => {
   const server = app.listen(PORT, () => {
-    database.connect()
+    // database.connect()
     log.info(`App listening on port ${PORT}`)
   })
-
-  container.bind(UserRepository).toSelf()
-  container.bind(UserService).toSelf()
-  container.bind(ProductRepository).toSelf()
-  container.bind(ProductService).toSelf()
-  container.bind(AuthRepository).toSelf()
-  container.bind(AuthService).toSelf()
 
   const signals = ['SIGTERM', 'SIGINT']
 
