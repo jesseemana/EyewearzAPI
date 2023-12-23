@@ -20,13 +20,10 @@
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.4",
     "helmet": "^7.1.0",
-    "inversify": "^6.0.2",
-    "inversify-express-utils": "^6.4.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.5",
     "nanoid": "^5.0.3",
     "pino": "^8.16.2",
-    "reflect-metadata": "^0.1.13",
     "zod": "^3.22.4"
   },
   "devDependencies": {
