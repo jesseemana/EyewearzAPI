@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { login, logout } from '../controller/auth.controller'
+import { login, logout } from '../controllers/auth.controller'
 import loginLimiter from '../middleware/limiter'
 
 const router = Router()
