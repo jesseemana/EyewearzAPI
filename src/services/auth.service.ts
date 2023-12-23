@@ -1,61 +1,49 @@
-import { injectable } from 'inversify'
-import { UserRepository } from '../repository/user.repository'
-import { signJwt } from '../utils/jwt'
+import CustomerModel from '../models/customer.model'
 import { omit } from 'lodash'
-import { AuthRepository } from '../repository/auth.repository'
+import { signJwt } from '../utils/jwt'
 import { DocumentType } from '@typegoose/typegoose'
-import { User, private_fields } from '../models/user.model'
+import { Customer, private_fields } from '../models/customer.model'
 import { FilterQuery, UpdateQuery } from 'mongoose'
-import { Session } from '../models/session.model'
+import SessionModel, { Session } from '../models/session.model'
 
-@injectable()
-export class AuthService {
-  private readonly _userRepository: UserRepository
-  private readonly _authRepository: AuthRepository
+async function findUserByEmail(email: string) {
+  return CustomerModel.findOne({ email })
+}
 
-  constructor (
-    _userRepository: UserRepository,
-    _authRepository: AuthRepository
-  ) {
-    this._userRepository = _userRepository
-    this._authRepository = _authRepository
-  }
+async function findUserById(id: string) {
+  return CustomerModel.findById(id)
+}
 
-  async findUserByEmail(email: string) {
-    return this._userRepository.getUserByEmail(email)
-  }
+async function createSession({ user_id }: { user_id: string }) {
+  return SessionModel.create({ user_id })
+}
 
-  async findUserById(id: string) {
-    return this._userRepository.getUserById(id)
-  }
+async function findSessionById(id: string) {
+  return SessionModel.findById(id)
+}
 
-  async createSession({ user_id }: { user_id: string }) {
-    return this._authRepository.createSession({ user_id })
-  }
+function signAccessToken(
+  user: DocumentType<Customer>, 
+  session: DocumentType<Session>
+) {
+  const user_payload = omit(user.toJSON(), private_fields)
+  const access_token = signJwt({ ...user_payload, session }, 'accessTokenPrivateKey', { expiresIn: '15m' })
 
-  async findSessionById(id: string) {
-    return this._authRepository.findSessionById(id)
-  }
+  return access_token 
+}
 
-  signAccessToken(
-    user: DocumentType<User>, 
-    session: DocumentType<Session>
-  ) {
-    const user_payload = omit(user.toJSON(), private_fields)
-    const access_token = signJwt({ ...user_payload, session }, 'accessTokenPrivateKey', { expiresIn: '15m' })
+async function destroySession(
+  filter: FilterQuery<Session>, 
+  update: UpdateQuery<Session>
+) {
+  return SessionModel.updateOne(filter, update)
+}
 
-    return access_token 
-  }
-
-  signRefreshToken(session: DocumentType<Session>) {
-    const refresh_token = signJwt({ session: session._id }, 'accessTokenPrivateKey', { expiresIn: '30d' })
-    return refresh_token
-  }
-
-  async destroySession(
-    filter: FilterQuery<Session>, 
-    update: UpdateQuery<Session>
-  ) {
-    return this._authRepository.destroySession(filter, update)
-  }
+export default {
+  findUserByEmail, 
+  findUserById, 
+  createSession, 
+  signAccessToken, 
+  destroySession,
+  findSessionById
 }

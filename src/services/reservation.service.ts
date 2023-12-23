@@ -1,21 +1,14 @@
-import { DocumentType } from '@typegoose/typegoose'
-import { ReservationRepository } from '../repository/reservation.repository'
-import { Appointment } from '../models/appointment.model'
-import { injectable } from 'inversify'
+import AppointmentModel, { Appointment } from '../models/appointment.model'
 
-@injectable()
-export class ReservationService {
-  private readonly _reservationRepository: ReservationRepository
+async function getBookings() {
+  return AppointmentModel.find({})
+}
 
-  constructor(_reservationRepository: ReservationRepository) { 
-    this._reservationRepository = _reservationRepository 
-  }
+async function createAppointment(data: Partial<Appointment>) {
+  return AppointmentModel.create(data)
+}
 
-  async getBookings() {
-    return this._reservationRepository.getBookings()
-  }
-
-  async createAppointment(data: Partial<Appointment>) {
-    return this._reservationRepository.createAppointment(data)
-  }
+export default {
+  getBookings,
+  createAppointment
 }

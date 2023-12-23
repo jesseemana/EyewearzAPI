@@ -1,23 +1,14 @@
-import { ProductRepository } from '../repository/product.repository'
-import { injectable } from 'inversify'
+import ProductModel from "../models/product.model"
 
-@injectable()
-export class ProductService {
-  private readonly _productRepository: ProductRepository
+async function getAllProducts() {
+  return ProductModel.find({})
+}
 
-  constructor ( _productRepository: ProductRepository) {
-    this._productRepository = _productRepository
-  }
+async function getOneProduct(id: string) {
+  return ProductModel.findById(id)
+}
 
-  async getAllProducts() {
-    return this._productRepository.findAllProducts()
-  }
-
-  async getSunglasses() {
-    return this._productRepository.findSunglasses()
-  }
-
-  async getOneProduct(id: string) {
-    return this._productRepository.getSingleProdcut(id)
-  }
+export default {
+  getAllProducts,
+  getOneProduct
 }
