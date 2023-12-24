@@ -33,7 +33,7 @@ app.use('/api/products', ProductsRoute)
 app.use('/api/customers', CustomersRoute)
 app.use('/api/reservation', ReservationRoute)
 
-const startServer = () => {
+function startServer() {
   const server = app.listen(PORT, () => {
     // database.connect()
     log.info(`App listening on port ${PORT}`)
