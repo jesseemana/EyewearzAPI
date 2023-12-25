@@ -3,7 +3,7 @@ import { createCustomer, getAllCustomers } from '../controllers/cutomer.controll
 
 const router = Router()
 
-router.post('/', getAllCustomers)
+router.get('/', getAllCustomers)
 router.post('/create', createCustomer)
 
 export default router
