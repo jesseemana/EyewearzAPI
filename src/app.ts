@@ -13,8 +13,6 @@ import AuthRoute from './routes/auth.route'
 import CustomersRoute from './routes/customer.route'
 import ReservationRoute from './routes/reservation.route'
 
-// npm i lodash
-// npm i --save-dev @types/lodash @types/jsonwebtoken
 const PORT = config.get<number>('port')
 
 const app = express()
@@ -35,7 +33,7 @@ app.use('/api/reservation', ReservationRoute)
 
 function startServer() {
   const server = app.listen(PORT, () => {
-    // database.connect()
+    database.connect()
     log.info(`App listening on port ${PORT}`)
   })
 
