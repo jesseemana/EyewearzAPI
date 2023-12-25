@@ -2,14 +2,17 @@
 import { getModelForClass, prop } from '@typegoose/typegoose'
 
 export class Product {
-  @prop({ required: true })
-  id: string
+  // @prop({ required: true, default: nanoid() })
+  // product_id: string
 
   @prop({ required: true })
   name: string
 
   @prop({ required: true })
   image: string
+
+  @prop({ required: true })
+  cloudinary_id: string
 
   @prop({ required: true })
   category: string
