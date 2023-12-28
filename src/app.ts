@@ -17,9 +17,7 @@ const PORT = config.get<number>('port')
 
 const app = express()
 
-app.use(cors({
-  // configure CORS stuff here
-}))
+app.use(cors())
 app.use(helmet())
 app.use(cookieParser())
 app.use(deserializeuser)
