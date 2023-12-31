@@ -15,7 +15,7 @@ export async function login(
     const session = await AuthService.createSession({ user_id: String(user._id)})
     const access_token = AuthService.signAccessToken(user, session)
 
-    res.status(200).send({ user, access_token })
+    return res.status(200).send({ user, access_token })
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
@@ -30,7 +30,7 @@ export async function logout(_: Request, res: Response) {
 
     await AuthService.destroySession({ _id: session_id }, { valid: false })
 
-    res.status(200).send('User loged out successfully.')
+    return res.status(200).send('User loged out successfully.')
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
