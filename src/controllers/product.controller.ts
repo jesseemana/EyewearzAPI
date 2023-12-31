@@ -24,7 +24,7 @@ export async function getOneProduct(req: Request, res: Response) {
 export async function filterProduct(req: Request, res: Response) {
   const { category } = req.query
   try {
-    const found_item = await ProductService.filterProducts(String(category))
+    const found_item = await ProductService.filterCategory(String(category))
     if (found_item.length === 0) {
       return res.status(404).send(`Item in ${category}'s category not found.`)
     }
