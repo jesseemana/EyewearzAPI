@@ -1,6 +1,5 @@
 import ProductModel, { Product } from '../models/product.model'
 import cloudinary from '../utils/cloudinary'
-import log from '../utils/logger'
 
 async function uploadPicture(picture: string) {
   const response = await cloudinary.uploader.upload(picture)
