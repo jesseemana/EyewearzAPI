@@ -18,7 +18,7 @@ async function getAllProducts() {
   return ProductModel.find({})
 }
 
-async function filterProducts(query: string) {
+async function filterCategory(query: string) {
   return ProductModel.find({ category: query })
 }
 
@@ -31,5 +31,5 @@ export default {
   createProduct,
   getAllProducts,
   getOneProduct,
-  filterProducts,
+  filterCategory,
 }
