@@ -10,7 +10,7 @@ export async function login(
   try {
     const user = await AuthService.findUserByEmail(email)
     if (!user || !user.verifyPassword(password))
-      return res.status(401).send('Invalid user credentails given')
+      return res.status(401).send('Invalid user credentials given')
 
     const session = await AuthService.createSession({ user_id: String(user._id)})
     const access_token = AuthService.signAccessToken(user, session)
