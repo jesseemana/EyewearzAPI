@@ -32,7 +32,7 @@ app.use('/api/reservation', ReservationRoute)
 function startServer() {
   const server = app.listen(PORT, () => {
     database.connect()
-    log.info(`App listening on port ${PORT}`)
+    log.info(`App listening on: http://localhost:${PORT}`)
   })
 
   const signals = ['SIGTERM', 'SIGINT']

@@ -1,5 +1,6 @@
 import ProductModel, { Product } from '../models/product.model'
 import cloudinary from '../utils/cloudinary'
+import log from '../utils/logger'
 
 async function uploadPicture(picture: string) {
   const response = await cloudinary.uploader.upload(picture)
@@ -17,6 +18,10 @@ async function getAllProducts() {
   return ProductModel.find({})
 }
 
+async function filterProducts(query: string) {
+  return ProductModel.find({ category: query })
+}
+
 async function getOneProduct(id: string) {
   return ProductModel.findById(id)
 }
@@ -26,4 +31,5 @@ export default {
   createProduct,
   getAllProducts,
   getOneProduct,
+  filterProducts,
 }
