@@ -22,11 +22,12 @@ export async function getOneProduct(req: Request, res: Response) {
 }
 
 export async function filterCategory(req: Request, res: Response) {
-  const category = String(req.query.category)
   try {
+    const category = String(req.query.category)
     const found_products = await ProductService.filterByCategory(category)
     if (found_products.length === 0) 
       return res.status(404).send(`No items in ${category} category were found.`)
+    
     return res.status(200).send(found_products)
   } catch (error) {
     return res.status(500).send('Internal server error!')
@@ -34,11 +35,12 @@ export async function filterCategory(req: Request, res: Response) {
 }
 
 export async function filterGender(req: Request, res: Response) {
-  const gender = String(req.query.gender)
   try {
-    const found_products = await ProductService.filterByGender(gender)
+    const gender = String(req.query.gender)
+    const found_products = await ProductService.filterByGender(gender) 
     if (found_products.length === 0) 
       return res.status(404).send(`No items in ${gender} category were found.`)
+    
     return res.status(200).send(found_products)
   } catch (error) {
     return res.status(500).send('Internal server error!')
@@ -49,15 +51,16 @@ export async function createProduct(
   req: Request<{}, {}, ProductInput>, 
   res: Response
 ) {
-  const body = product_schema.parse(req.body)
   try {
+    const body = product_schema.parse(req.body)
+
     if (req.file) {
       const response = await ProductService.uploadPicture(req.file.path)
-      if (response) {
-        const product = await ProductService.createProduct({ ...body, ...response })
-        return res.status(201).send(`Product ${product.name} created.`)
-      }
+      const product = await ProductService.createProduct({ ...body, ...response })
+      return res.status(201).send(`Product ${product.name} created.`)
     }
+
+    throw new Error('Product picture is required.');
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
