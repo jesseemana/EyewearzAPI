@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import 'reflect-metadata'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -48,7 +47,7 @@ function startServer() {
     })
   }
 
-  for (let i = 0; i < signals.length; i++) {
+  for (let i=0; i < signals.length; i++) {
     gracefulShutdown(signals[i])
   }
 }
