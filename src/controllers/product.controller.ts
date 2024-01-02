@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import ProductService from '../services/product.service'
 import { ProductInput, product_schema } from '../schema/product'
 
-export async function getProductsHandler(req: Request, res: Response) {
+export async function getAllProducts(_: Request, res: Response) {
   try {
     const all_products = await ProductService.getAllProducts()
     return res.status(200).send(all_products)
@@ -14,21 +14,32 @@ export async function getProductsHandler(req: Request, res: Response) {
 export async function getOneProduct(req: Request, res: Response) {
   const { id } = req.params
   try {
-    const product = await ProductService.getOneProduct(id)
-    res.status(200).send(product)
+    const product = await ProductService.findById(id)
+    return res.status(200).send(product)
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
 }
 
-export async function filterProduct(req: Request, res: Response) {
-  const { category } = req.query
+export async function filterCategory(req: Request, res: Response) {
+  const category = String(req.query.category)
   try {
-    const found_item = await ProductService.filterCategory(String(category))
-    if (found_item.length === 0) {
-      return res.status(404).send(`Item in ${category}'s category not found.`)
-    }
-    res.status(200).send(found_item)
+    const found_products = await ProductService.filterByCategory(category)
+    if (found_products.length === 0) 
+      return res.status(404).send(`No items in ${category} category were found.`)
+    return res.status(200).send(found_products)
+  } catch (error) {
+    return res.status(500).send('Internal server error!')
+  }
+}
+
+export async function filterGender(req: Request, res: Response) {
+  const gender = String(req.query.gender)
+  try {
+    const found_products = await ProductService.filterByGender(gender)
+    if (found_products.length === 0) 
+      return res.status(404).send(`No items in ${gender} category were found.`)
+    return res.status(200).send(found_products)
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
@@ -44,7 +55,7 @@ export async function createProduct(
       const response = await ProductService.uploadPicture(req.file.path)
       if (response) {
         const product = await ProductService.createProduct({ ...body, ...response })
-        return res.status(201).send(`Product ${product.name} created`)
+        return res.status(201).send(`Product ${product.name} created.`)
       }
     }
   } catch (error) {
