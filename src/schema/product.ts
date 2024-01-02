@@ -7,7 +7,7 @@ export const product_schema = object({
   price: string({ 
     required_error: 'Image is required' 
   }).trim(),
-  category: z.enum(['sunglasses', 'prescription', 'bluelight', 'kids', 'unisex']),
+  category: z.enum(['sunglasses', 'prescription', 'bluelight', 'kids']),
   gender: z.enum(['male', 'female', 'unisex']),
   description: string({ 
     required_error: 'Product description is required' 
