@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import ProductService from '../services/product.service'
+import uploadPicture from '../utils/upload-picture'
 import { ProductInput, product_schema } from '../schema/product'
 
 export async function getAllProducts(_: Request, res: Response) {
@@ -53,13 +54,12 @@ export async function createProduct(
 ) {
   try {
     const body = product_schema.parse(req.body)
-
     if (req.file) {
-      const response = await ProductService.uploadPicture(req.file.path)
+      const response = await uploadPicture(req.file.path)
       const product = await ProductService.createProduct({ ...body, ...response })
       return res.status(201).send(`Product ${product.name} created.`)
     }
-
+    
     throw new Error('Product picture is required.');
   } catch (error) {
     return res.status(500).send('Internal server error!')
