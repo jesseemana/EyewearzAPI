@@ -6,8 +6,8 @@ export async function login(
   req: Request<{}, {}, LoginInput>, 
   res: Response
 ) {
-  const { email, password } = login_schema.parse(req.body)
   try {
+    const { email, password } = login_schema.parse(req.body)
     const user = await AuthService.findUserByEmail(email)
     if (!user || !user.verifyPassword(password))
       return res.status(401).send('Invalid user credentials given')
