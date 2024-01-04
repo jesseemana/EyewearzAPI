@@ -1,7 +1,7 @@
 import ProductModel, { Product } from '../models/product.model'
 
 async function getAllProducts() {
-  return ProductModel.find({})
+  return ProductModel.find({}).limit(6)
 }
 
 async function findById(id: string) {
