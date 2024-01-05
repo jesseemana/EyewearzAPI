@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -11,6 +11,8 @@ import ProductsRoute from './routes/product.route'
 import AuthRoute from './routes/auth.route'
 import CustomersRoute from './routes/customer.route'
 import ReservationRoute from './routes/reservation.route'
+
+dotenv.config()
 
 const PORT = config.get<number>('port')
 
