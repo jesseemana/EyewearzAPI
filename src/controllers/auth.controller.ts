@@ -10,7 +10,7 @@ export async function login(
     const { email, password } = login_schema.parse(req.body)
     const user = await AuthService.findUserByEmail(email)
     
-    if (!user) return res.status(401).send('User does not exist.')
+    if (!user) return res.status(404).send('User does not exist.')
     if (!user.verifyPassword(password)) 
       return res.status(401).send('Please provide a correct password.')
 
