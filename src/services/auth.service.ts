@@ -24,7 +24,7 @@ const findSessionById = async (id: string) => {
 const signAccessToken = (
   user: DocumentType<Customer>, 
   session: DocumentType<Session>
-) => {
+): string => {
   const user_payload = omit(user.toJSON(), private_fields)
   const access_token = signJwt(
     { ...user_payload, session }, 

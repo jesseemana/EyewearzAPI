@@ -23,19 +23,17 @@ class ConnectDatabase {
     mongoose.connection.on('connected', () => {
       log.info('Database connected...')
     })
-
     mongoose.connection.on('error', (error: string) => {
-      log.error(`Error connecting to database: ${error}`)
+      log.error(`Error connecting to database: ${error}.`)
     })
-
     mongoose.connection.on('disconnected', () => {
-      log.warn('Mongoose database connection has been disconnected')
+      log.warn('Mongoose database has been disconnected.')
     })
   }
 
   disconnect() {
     mongoose.connection.close()
-    log.warn('Database connection closed due to app termination')  
+    log.warn('Database connection closed due to app termination.')  
   }
 }
 
