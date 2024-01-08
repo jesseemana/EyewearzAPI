@@ -1,7 +1,7 @@
 {
   "name": "opticals-server",
   "version": "1.0.0",
-  "description": "a backend rest api for the opticals app",
+  "description": "A backend REST api for the opticals site",
   "main": "app.ts",
   "scripts": {
     "build": "tsc",
