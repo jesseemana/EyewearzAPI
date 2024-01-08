@@ -1,10 +1,10 @@
 import { Router } from 'express'
+import { limiter } from '../middleware'
 import { login, logout } from '../controllers/auth.controller'
-import loginLimiter from '../middleware/limiter'
 
 const router = Router()
 
-router.post('/login', loginLimiter, login)
+router.post('/login', limiter, login)
 router.post('/logout', logout)
 
 export default router
