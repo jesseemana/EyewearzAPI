@@ -3,14 +3,15 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import config from 'config'
-import { logger } from './utils'
-import { database } from './utils'
+import { 
+  auth_route, 
+  user_route, 
+  booking_route,
+  product_route, 
+} from './routes'
 import cookieParser from 'cookie-parser'
-import AuthRoute from './routes/auth.route'
-import ProductsRoute from './routes/product.route'
-import CustomersRoute from './routes/customer.route'
+import { database, logger } from './utils'
 import deserializeuser from './middleware/deserialize-user'
-import ReservationRoute from './routes/reservation.route'
 
 dotenv.config()
 
@@ -25,10 +26,10 @@ app.use(deserializeuser)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/auth', AuthRoute)
-app.use('/api/products', ProductsRoute)
-app.use('/api/customers', CustomersRoute)
-app.use('/api/reservation', ReservationRoute)
+app.use('/api/auth', auth_route)
+app.use('/api/customers', user_route)
+app.use('/api/products', product_route)
+app.use('/api/reservation', booking_route)
 
 function startServer() {
   const server = app.listen(PORT, () => {
@@ -43,8 +44,7 @@ function startServer() {
       logger.info(`Received signal: ${signal}, shutting down...`)
       server.close()
       database.disconnect()
-      logger.info('Goodbye')
-
+      logger.info('Goodbye...')
       process.exit(0)
     })
   }
