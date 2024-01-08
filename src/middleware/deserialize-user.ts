@@ -6,7 +6,11 @@ const deserialize_user = (
   res: Response, 
   next: NextFunction
 ) => {
-  if (req.headers && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+  if (
+    req.headers && 
+    req.headers.authorization && 
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
     const token = (req.headers.authorization).split(' ')[1].trim()
     const decoded = jwt.verifyToken(token, 'accessTokenPublicKey')
     if (decoded) { res.locals.user = decoded }
