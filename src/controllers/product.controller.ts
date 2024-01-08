@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
-import ProductService from '../services/product.service'
-import uploadPicture from '../utils/upload-picture'
-import { ProductInput, product_schema } from '../schema/product'
+import { uploadPicture } from '../utils'
+import { ProductService } from '../services'
+import { product_schema } from '../schema'
+import { ProductInput } from '../schema/product'
 
 export async function getAllProducts(_: Request, res: Response) {
   try {

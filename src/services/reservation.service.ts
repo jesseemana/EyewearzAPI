@@ -1,11 +1,12 @@
-import AppointmentModel, { Appointment } from '../models/appointment.model'
+import { BookingModel } from '../models'
+import { Appointment } from '../models/appointment.model'
 
 async function getBookings() {
-  return AppointmentModel.find({})
+  return BookingModel.find({})
 }
 
 async function createAppointment(data: Partial<Appointment>) {
-  return AppointmentModel.create(data)
+  return BookingModel.create(data)
 }
 
 export default {

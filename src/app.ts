@@ -2,14 +2,14 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
-import cookieParser from 'cookie-parser'
-import deserializeuser from './middleware/deserialize-user'
-import database from './utils/connect-db'
-import log from './utils/logger'
 import config from 'config'
-import ProductsRoute from './routes/product.route'
+import { logger } from './utils'
+import { database } from './utils'
+import cookieParser from 'cookie-parser'
 import AuthRoute from './routes/auth.route'
+import ProductsRoute from './routes/product.route'
 import CustomersRoute from './routes/customer.route'
+import deserializeuser from './middleware/deserialize-user'
 import ReservationRoute from './routes/reservation.route'
 
 dotenv.config()
@@ -33,17 +33,17 @@ app.use('/api/reservation', ReservationRoute)
 function startServer() {
   const server = app.listen(PORT, () => {
     database.connect()
-    log.info(`App listening on: http://localhost:${PORT}`)
+    logger.info(`App listening on: http://localhost:${PORT}`)
   })
 
   const signals = ['SIGTERM', 'SIGINT']
 
   const gracefulShutdown = (signal: string) => {
     process.on(signal, () => {
-      log.info(`Received signal: ${signal}, shutting down...`)
+      logger.info(`Received signal: ${signal}, shutting down...`)
       server.close()
       database.disconnect()
-      log.info('Goodbye')
+      logger.info('Goodbye')
 
       process.exit(0)
     })

@@ -1,9 +1,11 @@
+import { jwt } from '../utils'
 import { omit } from 'lodash'
-import { signJwt } from '../utils/jwt'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
-import SessionModel, { Session } from '../models/session.model'
-import CustomerModel, { Customer, private_fields } from '../models/customer.model'
+import { Session } from '../models/session.model'
+import { Customer } from '../models/customer.model'
+import { private_fields } from '../models/customer.model'
+import { CustomerModel, SessionModel } from '../models'
 
 const findUserByEmail = async (email: string) => {
   return CustomerModel.findOne({ email })
@@ -26,7 +28,7 @@ const signAccessToken = (
   session: DocumentType<Session>
 ): string => {
   const user_payload = omit(user.toJSON(), private_fields)
-  const access_token = signJwt(
+  const access_token = jwt.signJwt(
     { ...user_payload, session }, 
     'accessTokenPrivateKey', 
     { expiresIn: '15m' }

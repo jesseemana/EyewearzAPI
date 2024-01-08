@@ -3,8 +3,8 @@ import log from './logger'
 import config from 'config'
 
 class ConnectDatabase {
-  dbUri: string
-  options: ConnectOptions
+  protected dbUri: string
+  protected options: ConnectOptions
 
   constructor() {
     this.options = {

@@ -1,4 +1,5 @@
-import CustomerModel, { Customer } from '../models/customer.model'
+import { CustomerModel } from '../models'
+import { Customer } from '../models/customer.model'
 
 async function getAllCustomers () {
   return CustomerModel.find({})

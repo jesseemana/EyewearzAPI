@@ -1,4 +1,5 @@
-import ProductModel, { Product } from '../models/product.model'
+import { ProductModel } from '../models'
+import { Product } from '../models/product.model'
 
 async function getAllProducts() {
   return ProductModel.find({}).limit(6)

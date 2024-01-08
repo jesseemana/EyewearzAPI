@@ -1,6 +1,6 @@
 import { string, object, TypeOf, z } from 'zod'
 
-export const product_schema = object({
+const product_schema = object({
   name: string({ 
     required_error: 'Name is required' 
   }).trim(),
@@ -18,3 +18,5 @@ export const product_schema = object({
 })
 
 export type ProductInput = TypeOf<typeof product_schema>
+
+export default product_schema

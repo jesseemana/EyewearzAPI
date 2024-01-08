@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import config from 'config'
 
-export const signJwt = (
+const signJwt = (
   object: Object, 
   keyName: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey', 
   options?: jwt.SignOptions | undefined
@@ -16,7 +16,7 @@ export const signJwt = (
   return token
 }
 
-export const verifyToken = <T> (
+const verifyToken = <T> (
   token: string, 
   verifyKey: 'accessTokenPublicKey' | 'refreshTokenPublicKey'
 ): T | null => {
@@ -28,4 +28,10 @@ export const verifyToken = <T> (
   } catch(e) {
     return null
   }
+}
+
+
+export default {
+  signJwt,
+  verifyToken,
 }

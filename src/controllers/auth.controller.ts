@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
-import AuthService from '../services/auth.service'
-import { LoginInput, login_schema } from '../schema/user'
+import { AuthService }from '../services'
+import { login_schema } from '../schema'
+import { LoginInput } from '../schema/user'
 
 export async function login(
   req: Request<{}, {}, LoginInput>, 
