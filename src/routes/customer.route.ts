@@ -6,7 +6,8 @@ import {
 
 const router = Router()
 
-router.get('/', getAllCustomers)
-router.post('/create', createCustomer)
+router.route('/')
+  .get(getAllCustomers)
+  .post(createCustomer)
 
 export default router
