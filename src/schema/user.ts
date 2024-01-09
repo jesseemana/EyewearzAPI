@@ -1,6 +1,71 @@
 import { string, object, TypeOf } from 'zod'
 
-// @ts-ignore
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    create_user_input:
+ *      type: object
+ *      required:
+ *        - first_name
+ *        - last_name
+ *        - email
+ *        - password
+ *        - confirm_password
+ *      properties:
+ *        first_name:
+ *          type: string
+ *          default: John
+ *        last_name:
+ *          type: string
+ *          default: Doe
+ *        email:
+ *          type: string
+ *          default: johndoe@example.com
+ *        password:
+ *          type: string
+ *          default: Password_1234
+ *        confirm_password:
+ *          type: string
+ *          default: Password_1234
+ *    create_user_response:
+ *      type: object
+ *      properties:
+ *        first_name:
+ *          type: string
+ *        last_name
+ *          type: strinig
+ *        email
+ *          type: string
+ *        role:
+ *          type: string
+ *        cart:
+ *          type: array
+ *        favorites:
+ *          type: array
+ *        _id:
+ *          type: string
+ *    login_user_input
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *         email:
+ *          type: string
+ *          default: johndoe@example.com
+ *        password:
+ *          type: string
+ *          default: Password_1234
+ *    login_user_response:
+ *      type: object
+ *      properties:
+ *        required:
+ *         - accessToken
+ *       properties:
+ *         accessToken:
+ *           type: string
+ */
 export const user_schema = object({
   first_name: string({
     required_error: 'First name is required'
