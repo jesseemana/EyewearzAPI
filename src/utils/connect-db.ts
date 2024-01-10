@@ -14,7 +14,7 @@ class ConnectDatabase {
       socketTimeoutMS: 4500,
     }
 
-    this.dbUri = config.get<string>('dbUri')
+    this.dbUri = String(process.env.MONGO_URI)
   }
 
   connect() { 

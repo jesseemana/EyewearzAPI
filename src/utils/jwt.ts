@@ -9,9 +9,9 @@ const signJwt = (
   const signing_key = Buffer.from(config.get<string>(keyName), 'base64').toString('ascii')
 
   const token = jwt.sign(object, signing_key, { 
-  ...(options && options), // options is jwt time to live
-  algorithm: 'RS256'
-  }) as string
+    ...(options && options), // options is jwt time to live
+    algorithm: 'RS256'
+  })
 
   return token
 }
