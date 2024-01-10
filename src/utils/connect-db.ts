@@ -1,6 +1,8 @@
 import mongoose, { ConnectOptions } from 'mongoose'
 import log from './logger'
-import config from 'config'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 class ConnectDatabase {
   protected dbUri: string
