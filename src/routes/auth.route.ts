@@ -6,39 +6,43 @@ const router = Router()
 
 /**
  * @openapi
- *'/api/auth/login'
+ *'/api/auth/login':
  *  post:
- *    tags: 
+ *      tags: 
  *      - Auth
- *    summary: Login user
- *    requestBody:
- *      required: true
- *      content:
- *        application/json
- *          schema:
- *            $ref: '#/components/schemas/login_user_input'
- *    responses:
- *      200:
- *        description: Success
+ *      summary: Login user
+ *      requestBody:
+ *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/login_user_response'
+ *              $ref: '#/components/schemas/loginUserInput'
+ *      responses:
+ *        200:
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/loginUserResponse'
+ *        404:
+ *          description: Invalid email/user not found
+ *        401:
+ *          description: Invalid password
  */
 router.post('/login', limiter, login)
 
 /**
  * @openapi
- * '/api/auth/logout'
+ * '/api/auth/logout':
  *  delete:
- *    tags:
- *      - Auth
- *    summary: Delete a session
- *    responses:
- *      200:
- *        description: User loged out
- *      403:
- *        description: Forbidden
+ *        tags:
+ *        - Auth
+ *        summary: Delete a session
+ *        responses:
+ *          200:
+ *              description: User loged out
+ *          403:
+ *              description: Forbidden
  */
 router.delete('/logout', require_user, logout)
 
