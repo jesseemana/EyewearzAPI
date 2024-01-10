@@ -11,7 +11,7 @@ const router = Router()
  * '/api/users':
  *  post:
  *      tags:
- *      - Register User/Customer
+ *      - Users
  *      summary: Resgister a user/customer
  *      requestBody:
  *        required: true
@@ -34,7 +34,7 @@ const router = Router()
  *          description: Internal server error
  *  get:
  *     tags:
- *     - Get Users/Customers
+ *     - Users
  *     summary: Get all users/customers
  *     responses:
  *        200:

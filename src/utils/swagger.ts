@@ -17,16 +17,16 @@ const options: swaggerJsdoc.Options = {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT'
-        }
-      }
+        },
+      },
     },
     security: [
       {
         bearerAuth: [],
-      }
-    ]
+      },
+    ],
   },
-  apis: ["./src/routes", "./src/schema"]
+  apis: ['./src/app.ts', './src/schema/*.ts', './src/routes/*.ts'],
 }
 
 const swaggerSpec = swaggerJsdoc(options)
@@ -37,11 +37,11 @@ const swaggerDocs = (app: Express, port: number) => {
 
   // Docs in json format
   app.get('docs.json', (req: Request, res: Response) => {
-    res.setHeader("Content-Type", "application/json")
+    res.setHeader('Content-Type', 'application/json')
     res.send(swaggerSpec)
   })
 
-  log.info(`Docs available at http://localhost:${port}/docs`)
+  log.info(`Docs available at: http://localhost:${port}/docs`)
 }
 
 export default swaggerDocs

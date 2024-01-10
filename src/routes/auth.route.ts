@@ -37,7 +37,7 @@ router.post('/login', limiter, login)
  *  delete:
  *        tags:
  *        - Auth
- *        summary: Delete a session
+ *        summary: Logout user
  *        responses:
  *          200:
  *              description: User loged out
