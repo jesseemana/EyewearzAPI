@@ -16,14 +16,14 @@ const router = Router()
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/loginUserInput'
+ *              $ref: '#/components/schema/loginUserInput'
  *      responses:
  *        200:
  *          description: Success
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/loginUserResponse'
+ *                $ref: '#/components/schema/loginUserResponse'
  *        404:
  *          description: Invalid email/user not found
  *        401:

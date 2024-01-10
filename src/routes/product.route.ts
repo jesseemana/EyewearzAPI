@@ -54,7 +54,7 @@ router.get('/:id', getOneProduct)
 
 /**
 *  @openapi
-* '/api/products/{query}':
+* '/api/products/filter/{query}':
 *  get:
 *     tags:
 *       - Products
@@ -82,7 +82,7 @@ router.post('/filter/:query', filterGender)
  *  post:
  *      tags:
  *      - Products
- *      summary: create a new product
+ *      summary: Create a new product
  *      requestBody:
  *        required: true
  *        content:

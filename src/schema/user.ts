@@ -1,71 +1,5 @@
 import { string, object, TypeOf } from 'zod'
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    create_user_input:
- *      type: object
- *      required:
- *        - first_name
- *        - last_name
- *        - email
- *        - password
- *        - confirm_password
- *      properties:
- *        first_name:
- *          type: string
- *          default: John
- *        last_name:
- *          type: string
- *          default: Doe
- *        email:
- *          type: string
- *          default: johndoe@example.com
- *        password:
- *          type: string
- *          default: Password_1234
- *        confirm_password:
- *          type: string
- *          default: Password_1234
- *    create_user_response:
- *      type: object
- *      properties:
- *        first_name:
- *          type: string
- *        last_name
- *          type: strinig
- *        email
- *          type: string
- *        role:
- *          type: string
- *        cart:
- *          type: array
- *        favorites:
- *          type: array
- *        _id:
- *          type: string
- *    login_user_input
- *      type: object
- *      required:
- *        - email
- *        - password
- *      properties:
- *         email:
- *          type: string
- *          default: johndoe@example.com
- *        password:
- *          type: string
- *          default: Password_1234
- *    login_user_response:
- *      type: object
- *      properties:
- *        required:
- *         - accessToken
- *       properties:
- *         accessToken:
- *           type: string
- */
 export const user_schema = object({
   first_name: string({
     required_error: 'First name is required'
@@ -96,6 +30,30 @@ export const user_schema = object({
 })
 
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *    loginUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: johndoe@example.com
+ *        password:
+ *          type: string
+ *          default: Password_1234
+ *    loginUserResponse:
+ *      type: object
+ *      required:
+ *        - accessToken
+ *      properties:
+ *        accessToken:
+ *          type: string 
+ */
 export const login_schema = object({
   email: string({ required_error: 'Email is required' }).email('Enter a valid email').trim().toLowerCase(),
   password: string({
