@@ -19,6 +19,10 @@ const router = Router()
  *     responses:
  *       200:
  *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/schema/GetProducts'
  *       404:
  *         descriptions: No products found
  */
@@ -90,7 +94,8 @@ router.post('/filter/:query', filterGender)
  *          descriptions: Product created
  *          content:
  *            application/json:
- *              $ref: '#components/schema/ProductResponse'
+ *              schema:
+ *                $ref: '#components/schema/productResponse'
  *          example:
  *             "_id": "642a1cfcc1bec76d8a2e7ac2"
  *             "name": "sunglasses"
