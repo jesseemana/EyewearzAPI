@@ -108,6 +108,12 @@ router.post('/filter/:query', filterGender)
  *             "createdAt": "2023-04-03T00:25:32.189Z"
  *             "updatedAt": "2023-04-03T00:25:32.189Z"
  *             "__v": 0
+ *        401:
+ *          description: Unauthorized
+ *        403:
+ *          description: Forbiden
+ *        500:
+ *          description: Internal server error
  */
 router.post('/create', [upload.single('file'), require_user], createProduct)
 

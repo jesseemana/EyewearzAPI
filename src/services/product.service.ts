@@ -13,8 +13,8 @@ async function createProduct(data: Product) {
   return ProductModel.create(data)
 }
 
-async function filterByGender(gender: string) {
-  return ProductModel.find({ gender })
+async function filterQuery(query: string) {
+  return ProductModel.find({ query })
 }
 
 async function filterByCategory(category: string) {
@@ -23,8 +23,8 @@ async function filterByCategory(category: string) {
 
 export default {
   findById,
-  filterByGender,
-  filterByCategory,
+  filterQuery,
   createProduct,
   getAllProducts,
+  filterByCategory,
 }
