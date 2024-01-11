@@ -4,9 +4,6 @@ import logger from 'pino'
 const level = 'info'
 
 const log = logger({
-  transport: {
-    target: 'pino-pretty'
-  },
   level,
   base: {
     pid: false
