@@ -1,9 +1,9 @@
-import { Customer } from './user.model'
+import { User } from './user.model'
 import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 
 export class Session {
-  @prop({ ref: () => Customer })
-  user: Ref<Customer>
+  @prop({ ref: () => User })
+  user: Ref<User>
   
   @prop({ default: true })
   valid: boolean
