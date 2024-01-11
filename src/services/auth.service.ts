@@ -34,7 +34,7 @@ const signAccessToken = (
   const access_token = jwt.signJwt(
     { ...user_payload, session }, 
     String(process.env.ACCESS_TOKEN_PRIVATE_KEY), 
-    { expiresIn: '15m' }
+    { expiresIn: process.env.TOKEN_TIME_TO_LIVE }
   )
 
   return access_token 
