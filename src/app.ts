@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 import express, { Response } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
-import config from 'config'
 import { 
   auth_route, 
   user_route, 
