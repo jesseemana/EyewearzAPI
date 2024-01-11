@@ -1,7 +1,6 @@
 import mongoose, { ConnectOptions } from 'mongoose'
 import log from './logger'
 import dotenv from 'dotenv'
-
 dotenv.config()
 
 class ConnectDatabase {

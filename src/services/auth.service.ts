@@ -1,11 +1,14 @@
+import dotenv from 'dotenv'
 import { jwt } from '../utils'
 import { omit } from 'lodash'
+import { User } from '../models/user.model'
+import { Session } from '../models/session.model'
+import { UserModel, SessionModel } from '../models'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
-import { Session } from '../models/session.model'
-import { User } from '../models/user.model'
 import { private_fields } from '../models/user.model'
-import { UserModel, SessionModel } from '../models'
+
+dotenv.config()
 
 const findUserByEmail = async (email: string) => {
   return UserModel.findOne({ email })
@@ -30,7 +33,7 @@ const signAccessToken = (
   const user_payload = omit(user.toJSON(), private_fields)
   const access_token = jwt.signJwt(
     { ...user_payload, session }, 
-    'accessTokenPrivateKey', 
+    String(process.env.ACCESS_TOKEN_PRIVATE_KEY), 
     { expiresIn: '15m' }
   )
 

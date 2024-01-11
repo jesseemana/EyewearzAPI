@@ -32,7 +32,7 @@ export const createProduct = async (
     const body = product_schema.parse(req.body)
 
     if (user.role !== 'admin') 
-      return res.status(401).send('User not authorized to make this operation')
+      return res.status(401).send('Only admins can create products.')
 
     if (req.file) {
       const response = await uploadPicture(req.file.path)

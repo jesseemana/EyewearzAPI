@@ -15,7 +15,8 @@ import deserializeuser from './middleware/deserialize-user'
 
 dotenv.config()
 
-const PORT = process.env.PORT
+// install cross site scripting what what, maybe re-write user model in mongoose🤷🏾‍♂️
+const PORT = Number(process.env.PORT)
 
 const app = express()
 
@@ -48,7 +49,7 @@ function startServer() {
   const server = app.listen(PORT, () => {
     log.info(`App listening on: http://localhost:${PORT}`)
     database.connect()
-    swaggerDocs(app, Number(PORT))
+    swaggerDocs(app, PORT)
   })
 
   const signals = ['SIGTERM', 'SIGINT']

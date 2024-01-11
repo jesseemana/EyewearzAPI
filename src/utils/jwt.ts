@@ -1,15 +1,14 @@
 import jwt from 'jsonwebtoken'
-import config from 'config'
 
 const signJwt = (
   object: Object, 
-  keyName: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey', 
+  keyName: string, 
   options?: jwt.SignOptions | undefined
 ): string => {
-  const signing_key = Buffer.from(config.get<string>(keyName), 'base64').toString('ascii')
+  const signing_key = Buffer.from(keyName, 'base64').toString('ascii')
 
   const token = jwt.sign(object, signing_key, { 
-    ...(options && options), // options is jwt time to live
+    ...(options && options), // options - jwt time to live
     algorithm: 'RS256'
   })
 
@@ -18,9 +17,9 @@ const signJwt = (
 
 const verifyToken = <T> (
   token: string, 
-  verifyKey: 'accessTokenPublicKey' | 'refreshTokenPublicKey'
+  verifyKey: string
 ): T | null => {
-  const public_key = Buffer.from(config.get<string>(verifyKey), 'base64').toString('ascii')
+  const public_key = Buffer.from(verifyKey, 'base64').toString('ascii')
 
   try {
     const decoded = jwt.verify(token, public_key) as T
@@ -29,7 +28,6 @@ const verifyToken = <T> (
     return null
   }
 }
-
 
 export default {
   signJwt,
