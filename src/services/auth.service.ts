@@ -3,8 +3,8 @@ import { omit } from 'lodash'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
 import { Session } from '../models/session.model'
-import { Customer } from '../models/customer.model'
-import { private_fields } from '../models/customer.model'
+import { Customer } from '../models/user.model'
+import { private_fields } from '../models/user.model'
 import { CustomerModel, SessionModel } from '../models'
 
 const findUserByEmail = async (email: string) => {

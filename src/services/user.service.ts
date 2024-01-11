@@ -1,13 +1,13 @@
-import { CustomerModel } from '../models'
+import { UserModel } from '../models'
 import { omit } from 'lodash'
-import { Customer } from '../models/user.model'
+import { User } from '../models/user.model'
 
 const getAllUsers = () => {
-  return CustomerModel.find({})
+  return UserModel.find({})
 }
 
-const registerUser = async (data: Partial<Customer>) => {
-  const new_user = await CustomerModel.create(data)
+const registerUser = async (data: Partial<User>) => {
+  const new_user = await UserModel.create(data)
   return omit(new_user.toJSON(), 'password', 'verifyPassword')
 }
 
