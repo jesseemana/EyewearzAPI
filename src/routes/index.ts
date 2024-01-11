@@ -1,5 +1,5 @@
 import auth_route from './auth.route'
-import user_route from './customer.route'
+import user_route from './user.route'
 import product_route from './product.route'
 import booking_route from './reservation.route'
 

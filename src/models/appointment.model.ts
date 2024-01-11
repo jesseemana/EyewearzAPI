@@ -1,4 +1,4 @@
-import { Customer } from './customer.model'
+import { Customer } from './user.model'
 import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 
 export class Appointment {
