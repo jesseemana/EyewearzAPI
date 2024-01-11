@@ -3,16 +3,16 @@ import { omit } from 'lodash'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
 import { Session } from '../models/session.model'
-import { Customer } from '../models/user.model'
+import { User } from '../models/user.model'
 import { private_fields } from '../models/user.model'
-import { CustomerModel, SessionModel } from '../models'
+import { UserModel, SessionModel } from '../models'
 
 const findUserByEmail = async (email: string) => {
-  return CustomerModel.findOne({ email })
+  return UserModel.findOne({ email })
 }
 
 const findUserById = async (id: string) => {
-  return CustomerModel.findById(id)
+  return UserModel.findById(id)
 }
 
 const createSession = async ({ user_id }: { user_id: string }) => {
@@ -24,7 +24,7 @@ const findSessionById = async (id: string) => {
 }
 
 const signAccessToken = (
-  user: DocumentType<Customer>, 
+  user: DocumentType<User>, 
   session: DocumentType<Session>
 ): string => {
   const user_payload = omit(user.toJSON(), private_fields)
