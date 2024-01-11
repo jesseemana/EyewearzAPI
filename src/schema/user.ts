@@ -1,5 +1,85 @@
-import { string, object, TypeOf } from 'zod'
+import { string, object, TypeOf, z } from 'zod'
 
+
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *    getAllUsers:
+ *      type: array
+ *      items:
+ *        type: object
+ *        required:
+ *          - first_name
+ *          - last_name
+ *          - email
+ *          - role
+ *          - cart
+ *          - favorites
+ *        properties:
+ *          _id:
+ *            type: string
+ *          first_name:
+ *            type: string
+ *          last_name:
+ *            type: string
+ *          email:
+ *            type: string
+ *          role:
+ *            type: string
+ *          cart:
+ *            type: array
+ *            items:
+ *              type: string
+ *          favorites:
+ *            type: array
+ *            items:
+ *              type: string
+ *          __v:
+ *            type: number
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - first_name
+ *        - last_name
+ *        - email
+ *        - role
+ *        - password
+ *      properties:
+ *        first_name:
+ *          type: string
+ *          default: John
+ *        last_name:
+ *          type: string
+ *          default: Doe
+ *        email:
+ *          type: string
+ *          default: johndoe@example.com
+ *        role:
+ *          type: string
+ *          default: admin
+ *        password:
+ *          type: string
+ *          default: Password_1234
+ *        confirm_password:
+ *          type: string
+ *          default: Password_1234
+ *    userResponse:
+ *      type: object
+ *      properties:
+ *         _id:
+ *          type: string
+ *         first_name:
+ *          type: string
+ *         last_name:
+ *          type: string
+ *         email:
+ *          type: string
+ *         role:
+ *          type: string
+ *         __v:
+ *          type: number
+ */
 export const user_schema = object({
   first_name: string({
     required_error: 'First name is required'
@@ -10,6 +90,7 @@ export const user_schema = object({
   email: string({
     required_error: 'Provide an email address'
   }).email('Enter a valid email').toLowerCase().trim(),
+  role: z.enum(['admin', 'user']),
   password: string({
     required_error: 'Password is required',
   }).regex(new RegExp(".*[A-Z].*"), "One uppercase character").regex(new RegExp(".*[a-z].*"), "One lowercase character")
@@ -64,6 +145,7 @@ export const login_schema = object({
     .min(8, "Must not be less than 8 characters.")
     .max(64, "Cannot be more than 64 characters long."),
 })
+
 
 export type UserInput = TypeOf<typeof user_schema>
 export type LoginInput = TypeOf<typeof login_schema>

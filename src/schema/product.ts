@@ -58,7 +58,7 @@ import { string, object, TypeOf, z } from 'zod'
  *          default: male
  *        description:
  *          type: string
- *          default: simple product description so that we don't live the fields empty, catch my drift?
+ *          default: designed for first-time DSLR owners who want impressive results straight out of the box. With easy to use automatic shooting modes, large 24.1 MP sensor, Canon Camera Connect app integration and built-in feature guide, EOS 1500D is always ready to go.
  *    productResponse:
  *      type: object
  *      properties:
@@ -81,7 +81,6 @@ import { string, object, TypeOf, z } from 'zod'
  *        __v:
  *          type: number
  */
-
 const product_schema = object({
   name: string({ 
     required_error: 'Name is required' 

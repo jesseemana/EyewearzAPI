@@ -45,6 +45,13 @@ const router = Router()
  *            application/json:
  *              schema:
  *                $ref: '#/components/schema/userResponse'
+ *              example:
+ *                "_id": "642a1cfcc1bec76d8a2e7ac2"
+ *                "first_name": "John"
+ *                "last_name": "Doe"
+ *                "email": "johndoe@example.com"
+ *                "role": "admin"
+ *                "__v": 0
  *        409:
  *          description: Conflict
  *        400:

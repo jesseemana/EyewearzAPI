@@ -96,18 +96,16 @@ router.post('/filter/:query', filterGender)
  *            application/json:
  *              schema:
  *                $ref: '#components/schema/productResponse'
- *          example:
- *             "_id": "642a1cfcc1bec76d8a2e7ac2"
- *             "name": "sunglasses"
- *             "price": 30,000
- *             "image": "https://i.imgur.com/QlRphfQ.jpg"
- *             "cloudinary_id": "080412bbws!@#!$"
- *             "category": "sunglasses"
- *             "gender": "male"
- *             "description": "designed for first-time DSLR owners who want impressive results straight out of the box, capture those magic moments no matter your level with the EOS 1500D. With easy to use automatic shooting modes, large 24.1 MP sensor, Canon Camera Connect app integration and built-in feature guide, EOS 1500D is always ready to go."
- *             "createdAt": "2023-04-03T00:25:32.189Z"
- *             "updatedAt": "2023-04-03T00:25:32.189Z"
- *             "__v": 0
+ *              example:
+ *                "_id": "642a1cfcc1bec76d8a2e7ac2"
+ *                "name": "sunglasses"
+ *                "price": 30,000
+ *                "category": "sunglasses"
+ *                "gender": "male"
+ *                "image": "https://i.imgur.com/QlRphfQ.jpg"
+ *                "cloudinary_id": "0#82bb$j091&@091#"
+ *                "description": "designed for first-time DSLR owners who want impressive results straight out of the box. With easy to use automatic shooting modes, large 24.1 MP sensor, Canon Camera Connect app integration and built-in feature guide, EOS 1500D is always ready to go."
+ *                "__v": 0
  *        401:
  *          description: Unauthorized
  *        403:
