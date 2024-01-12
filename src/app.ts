@@ -10,19 +10,19 @@ import {
 } from './routes'
 import cookieParser from 'cookie-parser'
 import { database, log, swaggerDocs } from './utils'
-import deserializeuser from './middleware/deserialize-user'
+import { deserialize_user, error_handler }from './middleware'
 
 dotenv.config()
 
 // install cross site scripting what what, maybe re-write user model in mongoose🤷🏾‍♂️
 const PORT = Number(process.env.PORT)
-
 const app = express()
 
+// middleware
 app.use(cors())
 app.use(helmet())
 app.use(cookieParser())
-app.use(deserializeuser)
+app.use(deserialize_user)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -38,13 +38,15 @@ app.use(express.urlencoded({ extended: true }))
  *         description: App is up and running
  */
 app.get('/api/healthcheck', (_, res: Response) => { res.sendStatus(200) })
-
+// routes
 app.use('/api/auth', auth_route)
 app.use('/api/users', user_route)
 app.use('/api/products', product_route)
 app.use('/api/reservation', booking_route)
+// error handling middleware
+app.use(error_handler)
 
-function startServer() {
+function start_server() {
   const server = app.listen(PORT, () => {
     log.info(`App listening on: http://localhost:${PORT}`)
     database.connect()
@@ -68,4 +70,4 @@ function startServer() {
   }
 }
 
-startServer()
+start_server()
