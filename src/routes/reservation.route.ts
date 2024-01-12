@@ -1,12 +1,9 @@
 import { Router } from 'express'
-import { 
-  bookAppointment, 
-  getAppointments 
-} from '../controllers/reservation.controller'
+import { BookingController } from '../controllers'
 
 const router = Router()
 
-router.post('/', getAppointments)
-router.post('/book', bookAppointment)
+router.post('/', BookingController.getAppointments)
+router.post('/book', BookingController.bookAppointment)
 
 export default router

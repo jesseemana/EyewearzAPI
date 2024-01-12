@@ -4,7 +4,7 @@ import { product_schema } from '../schema'
 import { ProductService } from '../services'
 import { ProductInput } from '../schema/product'
 
-export const getAllProducts = async (_: Request, res: Response) => {
+const getAllProducts = async (_: Request, res: Response) => {
   try {
     const all_products = await ProductService.getAllProducts()
     return res.status(200).send(all_products)
@@ -13,7 +13,7 @@ export const getAllProducts = async (_: Request, res: Response) => {
   }
 }
 
-export const getOneProduct = async (req: Request, res: Response) => {
+const getOneProduct = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
     const product = await ProductService.findById(id)
@@ -23,7 +23,7 @@ export const getOneProduct = async (req: Request, res: Response) => {
   }
 }
 
-export const createProduct = async (
+const createProduct = async (
   req: Request<{}, {}, ProductInput>, 
   res: Response
 ) => {
@@ -46,7 +46,7 @@ export const createProduct = async (
   }
 }
 
-export const filterGender = async (req: Request, res: Response) => {
+const filterGender = async (req: Request, res: Response) => {
   try {
     const { query } = req.params
     const found_products = await ProductService.filterQuery(query) 
@@ -57,4 +57,11 @@ export const filterGender = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
+}
+
+export default {
+  filterGender,
+  getOneProduct,
+  createProduct,
+  getAllProducts,
 }

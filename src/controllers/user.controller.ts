@@ -3,7 +3,7 @@ import { user_schema } from '../schema'
 import { UserInput } from '../schema/user'
 import { CustomerService }from '../services'
 
-export async function getAllUsers (_: Request, res: Response) {
+const getAllUsers = async (_: Request, res: Response) => {
   try {
     const user = res.locals.user
     if (user.role !== 'admin') return res.sendStatus(401)
@@ -16,10 +16,10 @@ export async function getAllUsers (_: Request, res: Response) {
   }
 }
 
-export async function createUser (
+const createUser = async (
   req: Request<{}, {}, UserInput>, 
   res: Response
-) {
+) => {
   const data = user_schema.parse(req.body)
   try {
     const new_user = await CustomerService.registerUser(data)
@@ -28,4 +28,9 @@ export async function createUser (
     if (error.code === 11000) return res.send('Account already exists')
     return res.status(500).send('Internal server error!')
   }
+}
+
+export default {
+  createUser,
+  getAllUsers,
 }

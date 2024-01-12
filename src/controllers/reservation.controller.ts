@@ -3,7 +3,7 @@ import { BookingService }from '../services'
 import { booking_schema } from '../schema'
 import { BookingInput } from '../schema/booking'
 
-export async function getAppointments(_: Request, res: Response) {
+const getAppointments = async (_: Request, res: Response) => {
   try {
     const bookings = await BookingService.getBookings()
     return res.status(200).send({ bookings })
@@ -12,10 +12,10 @@ export async function getAppointments(_: Request, res: Response) {
   }
 }
 
-export async function bookAppointment(
+const bookAppointment = async (
   req: Request<{}, {}, BookingInput>, 
   res: Response
-) {
+) => {
   const data = booking_schema.parse(req.body)
   try {
     const booking = await BookingService.createAppointment(data)
@@ -23,4 +23,9 @@ export async function bookAppointment(
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
+}
+
+export default {
+  getAppointments,
+  bookAppointment,
 }

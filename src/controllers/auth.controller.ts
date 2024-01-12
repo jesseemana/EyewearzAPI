@@ -3,10 +3,10 @@ import { AuthService }from '../services'
 import { login_schema } from '../schema'
 import { LoginInput } from '../schema/user'
 
-export async function login(
+const login = async (
   req: Request<{}, {}, LoginInput>, 
   res: Response
-) {
+) => {
   try {
     const { email, password } = login_schema.parse(req.body)
     const user = await AuthService.findUserByEmail(email)
@@ -24,7 +24,7 @@ export async function login(
   }
 }
 
-export async function logout(_: Request, res: Response) {
+const logout = async (_: Request, res: Response) => {
   try {
     const session_id = res.locals.user.session._id as string
     const session = await AuthService.findSessionById(session_id)
@@ -37,4 +37,9 @@ export async function logout(_: Request, res: Response) {
   } catch (error) {
     return res.status(500).send('Internal server error!')
   }
+}
+
+export default {
+  login,
+  logout,
 }

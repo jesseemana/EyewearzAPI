@@ -1,8 +1,5 @@
 import { Router } from 'express'
-import { 
-  createUser, 
-  getAllUsers,
-} from '../controllers/user.controller'
+import { UserController } from '../controllers'
 import { require_user } from '../middleware'
 
 const router = Router()
@@ -60,7 +57,7 @@ const router = Router()
  *          description: Internal server error
  */
 router.route('/')
-  .get(require_user, getAllUsers)
-  .post(createUser)
+  .get(require_user, UserController.getAllUsers)
+  .post(UserController.createUser)
 
 export default router
