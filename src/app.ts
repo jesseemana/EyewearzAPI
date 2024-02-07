@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import express, { Response } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -9,14 +9,13 @@ import {
   product_route, 
 } from './routes'
 import cookieParser from 'cookie-parser'
-import { database, log, swaggerDocs } from './utils'
+import { Database, log, swaggerDocs } from './utils'
 import { deserialize_user, error_handler }from './middleware'
 
-dotenv.config()
-
 // install cross site scripting what what, maybe re-write user model in mongoose🤷🏾‍♂️
-const PORT = Number(process.env.PORT)
 const app = express()
+const PORT = Number(process.env.PORT)
+const database = Database.getInstance()
 
 // middleware
 app.use(cors())
@@ -28,7 +27,7 @@ app.use(express.urlencoded({ extended: true }))
 
 /**
  * @openapi
- * /api/healthcheck:
+ * /health-check:
  *  get:
  *     tags:
  *     - Healthcheck
@@ -37,7 +36,7 @@ app.use(express.urlencoded({ extended: true }))
  *       200:
  *         description: App is up and running
  */
-app.get('/api/healthcheck', (_, res: Response) => { res.sendStatus(200) })
+app.get('/health-check', (_, res: Response) => res.sendStatus(200))
 // routes
 app.use('/api/auth', auth_route)
 app.use('/api/users', user_route)
@@ -48,7 +47,7 @@ app.use(error_handler)
 
 function start_server() {
   const server = app.listen(PORT, () => {
-    log.info(`App listening on: http://localhost:${PORT}`)
+    log.info(`App listening at: http://localhost:${PORT}`)
     database.connect()
     swaggerDocs(app, PORT)
   })
