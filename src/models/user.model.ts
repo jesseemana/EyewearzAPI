@@ -51,7 +51,7 @@ export class User {
   @prop({ default: [] })
   favorites: Array<string>
 
-  async verifyPassword(this: DocumentType<User>, candidate_password: string) {
+  async verify_password(this: DocumentType<User>, candidate_password: string) {
     try {
       return await argon2.verify(this.password, candidate_password)
     } catch(err) {

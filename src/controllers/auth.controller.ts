@@ -11,9 +11,9 @@ const login = async (
     const { email, password } = login_schema.parse(req.body)
     const user = await AuthService.findUserByEmail(email)
     
-    if (!user) return res.status(404).send('User does not exist.')
-    if (!user.verifyPassword(password)) 
-      return res.status(401).send('Please provide a correct password.')
+    if (!user) return res.status(404).send('User not found.')
+    if (!user.verify_password(password)) 
+      return res.status(401).send('Password is incorrect.')
 
     const session = await AuthService.createSession({ user_id: String(user._id)})
     const access_token = AuthService.signAccessToken(user, session)
@@ -26,7 +26,7 @@ const login = async (
 
 const logout = async (_: Request, res: Response) => {
   try {
-    const session_id = res.locals.user.session._id as string
+    const session_id = String(res.locals.user.session._id)
     const session = await AuthService.findSessionById(session_id)
     if (!session || !session.valid) 
       return res.status(401).send('Session not found or is invalid')
