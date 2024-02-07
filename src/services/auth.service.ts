@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { jwt } from '../utils'
+import { signJwt } from '../utils'
 import { omit } from 'lodash'
 import { User } from '../models/user.model'
 import { Session } from '../models/session.model'
@@ -26,17 +26,13 @@ const findSessionById = async (id: string) => {
   return SessionModel.findById(id)
 }
 
-const signAccessToken = (
-  user: DocumentType<User>, 
-  session: DocumentType<Session>
-): string => {
+const signAccessToken = (user: DocumentType<User>, session: DocumentType<Session>): string => {
   const user_payload = omit(user.toJSON(), private_fields)
-  const access_token = jwt.signJwt(
+  const access_token = signJwt(
     { ...user_payload, session }, 
     String(process.env.ACCESS_TOKEN_PRIVATE_KEY), 
     { expiresIn: process.env.TOKEN_TIME_TO_LIVE }
   )
-
   return access_token 
 }
 

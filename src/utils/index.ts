@@ -1,13 +1,14 @@
-import jwt from './jwt'
 import log from './logger'
-import database from './connect-db'
+import { Database } from './database'
 import swaggerDocs from './swagger'
+import { signJwt, verifyToken } from './jwt'
 import uploadPicture from './upload-picture'
 
 export {
-  jwt, 
   log, 
-  database, 
+  Database, 
+  signJwt, 
+  verifyToken, 
   swaggerDocs,
   uploadPicture
 }

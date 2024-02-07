@@ -29,7 +29,7 @@ const verifyToken = <T> (
   }
 }
 
-export default {
+export {
   signJwt,
   verifyToken,
 }

@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { jwt } from '../utils'
-import dotenv from 'dotenv'
-dotenv.config()
+import { verifyToken } from '../utils'
 
 const deserialize_user = (
   req: Request, 
@@ -14,7 +12,7 @@ const deserialize_user = (
     req.headers.authorization.startsWith('Bearer ')
   ) {
     const token = (req.headers.authorization).split(' ')[1].trim()
-    const decoded = jwt.verifyToken(token, String(process.env.ACCESS_TOKEN_PUBLIC_KEY))
+    const decoded = verifyToken(token, String(process.env.ACCESS_TOKEN_PUBLIC_KEY))
     if (decoded) { res.locals.user = decoded }
     return next()
   }
