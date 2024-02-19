@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { ProductController } from '../controllers'
-import { require_user, upload } from '../middleware'
+import { require_admin, upload } from '../middleware'
 
 const router = Router()
 
@@ -21,7 +21,7 @@ const router = Router()
  *       404:
  *         descriptions: No products found
  */
-router.get('/', ProductController.getAllProducts)
+router.get('/', ProductController.getAllProductsHandler)
 
 /**
 *  @openapi
@@ -45,7 +45,7 @@ router.get('/', ProductController.getAllProducts)
 *       404:
 *         description: Product not found
 */
-router.get('/:id', ProductController.getOneProduct)
+router.get('/:id', ProductController.getOneProductHandler)
 
 /**
 *  @openapi
@@ -69,7 +69,7 @@ router.get('/:id', ProductController.getOneProduct)
 *       404:
 *         description: Product not found
 */
-router.post('/filter/:query', ProductController.filterGender)
+router.post('/filter/:query', ProductController.filterGenderHandler)
 
 /**
  * @openapi
@@ -108,6 +108,10 @@ router.post('/filter/:query', ProductController.filterGender)
  *        500:
  *          description: Internal server error
  */
-router.post('/create', [upload.single('file'), require_user], ProductController.createProduct)
+router.post(
+  '/create', 
+  [upload.single('file'), require_admin], 
+  ProductController.createProductHandler
+)
 
 export default router
