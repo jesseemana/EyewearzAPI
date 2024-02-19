@@ -1,5 +1,3 @@
-import argon2 from "argon2"
-import log from '../utils/logger'
 import { 
   pre, 
   prop, 
@@ -9,6 +7,8 @@ import {
   modelOptions, 
   getModelForClass, 
 } from '@typegoose/typegoose'
+import argon2 from 'argon2'
+import { log } from '../utils'
 
 export const private_fields = ['cart', 'favorites', 'password']
 
@@ -39,11 +39,14 @@ export class User {
   @prop({ lowercase: true, required: true, unique: true })
   email: string
 
+  @prop({ required: true })
+  password: string
+  
   @prop({ required: true, default: 'user' })
   role: string
 
-  @prop({ required: true })
-  password: string
+  @prop()
+  password_reset_code: string | null
 
   @prop({ default: [] })
   cart: Array<string>
@@ -62,5 +65,4 @@ export class User {
 }
 
 const UserModel = getModelForClass(User)
-
 export default UserModel

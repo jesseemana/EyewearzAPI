@@ -1,13 +1,12 @@
 import { Router } from 'express'
 import { UserController } from '../controllers'
-import { require_user } from '../middleware'
+import { require_admin, validate_input } from '../middleware'
 
 const router = Router()
 
-
 /**
  * @openapi
- * '/api/users':
+ * '/api/v1/user':
  *  get:
  *     tags:
  *     - Users
@@ -57,7 +56,11 @@ const router = Router()
  *          description: Internal server error
  */
 router.route('/')
-  .get(require_user, UserController.getAllUsers)
-  .post(UserController.createUser)
+  .get(require_admin, UserController.get_users_handler)
+  .post(validate_input, UserController.create_user_handler)
+
+router.route('/forgot-password').post(validate_input, UserController.forgot_password_handler)
+
+router.route('/reset/:id/:password_reset_code').post(validate_input, UserController.reset_password_handler)
 
 export default router

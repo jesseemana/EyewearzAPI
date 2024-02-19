@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import { AuthController } from '../controllers'
-import { limiter, require_user } from '../middleware'
+import { limiter, require_user, validate_input } from '../middleware'
 
 const router = Router()
 
 /**
  * @openapi
- *'/api/auth/login':
+ *'/api/v1/auth/login':
  *  post:
  *      tags: 
  *      - Auth
@@ -29,11 +29,11 @@ const router = Router()
  *        401:
  *          description: Invalid password
  */
-router.post('/login', limiter, AuthController.login)
+router.post('/login', validate_input, limiter, AuthController.login_handler)
 
 /**
  * @openapi
- * '/api/auth/logout':
+ * '/api/v1/auth/logout':
  *  delete:
  *        tags:
  *        - Auth
@@ -44,6 +44,6 @@ router.post('/login', limiter, AuthController.login)
  *          403:
  *              description: Forbidden
  */
-router.delete('/logout', require_user, AuthController.logout)
+router.delete('/logout', require_user, AuthController.logout_handler)
 
 export default router

@@ -1,15 +1,14 @@
-import { Request, Response } from 'express'
-import { AuthService }from '../services'
-import { login_schema } from '../schema'
+import { Request, RequestHandler, Response } from 'express'
+import { AuthService, UserService }from '../services'
 import { LoginInput } from '../schema/user'
 
-const login = async (
+const login_handler: RequestHandler = async (
   req: Request<{}, {}, LoginInput>, 
   res: Response
 ) => {
   try {
-    const { email, password } = login_schema.parse(req.body)
-    const user = await AuthService.findUserByEmail(email)
+    const { email, password } = req.body
+    const user = await UserService.findUserByEmail(email)
     
     if (!user) return res.status(404).send('User not found.')
     if (!user.verify_password(password)) 
@@ -24,7 +23,7 @@ const login = async (
   }
 }
 
-const logout = async (_: Request, res: Response) => {
+const logout_handler: RequestHandler = async (_: Request, res: Response) => {
   try {
     const session_id = String(res.locals.user.session._id)
     const session = await AuthService.findSessionById(session_id)
@@ -40,6 +39,6 @@ const logout = async (_: Request, res: Response) => {
 }
 
 export default {
-  login,
-  logout,
+  login_handler,
+  logout_handler,
 }

@@ -1,6 +1,5 @@
 import { string, object, TypeOf, z } from 'zod'
 
-
 /**
  * @openapi
  * components:
@@ -147,5 +146,32 @@ export const login_schema = object({
 })
 
 
+export const reset_schema = object({
+  params: object({
+    id: string({ required_error: 'Id is required' }).trim(),
+    password_reset_code: string({ required_error: 'Password reset code is required' }).trim(),
+  }),
+  body: object({
+    password: string({
+      required_error: 'Please provide a password'
+    }).regex(new RegExp(".*[A-Z].*"), "One uppercase character").regex(new RegExp(".*\\d.*"), "One number")
+      .regex(new RegExp(".*[a-z].*"), "One lowercase character")
+      .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),"One special character")
+      .min(8, "Must not be less than 8 characters.")
+      .max(64, "Cannot be more than 64 characters long."),
+    confirm_password: string({
+      required_error: 'Please confirm your password'
+    }).regex(new RegExp(".*[A-Z].*"), "One uppercase character").regex(new RegExp(".*\\d.*"), "One number")
+      .regex(new RegExp(".*[a-z].*"), "One lowercase character")
+      .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),"One special character")
+      .min(8, "Must not be less than 8 characters.")
+      .max(64, "Cannot be more than 64 characters long."),
+  }).refine((data) => data.password === data.confirm_password, {
+    message: 'Passwords do not match',
+    path: ['confirm_password'],
+  }),
+})
+
 export type UserInput = TypeOf<typeof user_schema>
 export type LoginInput = TypeOf<typeof login_schema>
+export type ResetInput = TypeOf<typeof reset_schema>
