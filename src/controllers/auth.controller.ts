@@ -8,14 +8,14 @@ const login_handler: RequestHandler = async (
 ) => {
   try {
     const { email, password } = req.body
-    const user = await UserService.findUserByEmail(email)
+    const user = await UserService.find_user_by_email(email)
     
     if (!user) return res.status(404).send('User not found.')
     if (!user.verify_password(password)) 
       return res.status(401).send('Password is incorrect.')
 
-    const session = await AuthService.createSession({ user_id: String(user._id)})
-    const access_token = AuthService.signAccessToken(user, session)
+    const session = await AuthService.create_session({ user_id: String(user._id)})
+    const access_token = AuthService.sign_access_token(user, session)
 
     return res.status(200).send({ user, access_token })
   } catch (error) {
@@ -23,14 +23,14 @@ const login_handler: RequestHandler = async (
   }
 }
 
-const logout_handler: RequestHandler = async (_: Request, res: Response) => {
+const logout_handler: RequestHandler = async (_req: Request, res: Response) => {
   try {
     const session_id = String(res.locals.user.session._id)
-    const session = await AuthService.findSessionById(session_id)
+    const session = await AuthService.find_session_by_id(session_id)
     if (!session || !session.valid) 
       return res.status(401).send('Session not found or is invalid')
 
-    await AuthService.destroySession({ _id: session_id }, { valid: false })
+    await AuthService.destroy_session({ _id: session_id }, { valid: false })
 
     return res.status(200).send('User loged out successfully.')
   } catch (error) {

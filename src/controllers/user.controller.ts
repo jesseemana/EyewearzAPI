@@ -2,13 +2,12 @@ import { Request, RequestHandler, Response } from 'express'
 import { LoginInput, ResetInput, UserInput } from '../schema/user'
 import { UserService }from '../services'
 import { log } from '../utils'
-import { generate_code } from '../utils/generatecode'
 
 const BASE_URL = 'http://localhost:3030/api/v1/user'
 
 const get_users_handler: RequestHandler = async (_req: Request, res: Response) => {
   try {
-    const all_users = await UserService.getAllUsers()
+    const all_users = await UserService.get_all_users()
     return res.status(200).send(all_users)
   } catch(error) {
     return res.status(500).send('Internal Server Error')
@@ -21,7 +20,7 @@ const create_user_handler: RequestHandler = async (
 ) => {
   try {
     const data = req.body
-    const new_user = await UserService.registerUser(data)
+    const new_user = await UserService.register_user(data)
     return res.status(201).send(`New user ${new_user.first_name} ${new_user.last_name} has been registered.`)
   } catch (error: any) {
     if (error.code === 11000) 
@@ -37,12 +36,10 @@ const forgot_password_handler: RequestHandler = async (
   try {
     const { email } = req.body
 
-    const user = await UserService.findUserByEmail(email)
+    const user = await UserService.find_user_by_email(email)
     if (!user) return res.status(404).send('User not found')
 
-    const password_reset_code = generate_code()
-    user.password_reset_code = password_reset_code
-    user.save()
+    await UserService.update_reset_code(user)
 
     // send reset email link to user here
     const link = `${BASE_URL}/reset/${user._id}/${user.password_reset_code}`
@@ -62,14 +59,12 @@ const reset_password_handler = async (
     const { id, password_reset_code } = req.params
     const { password } = req.body
 
-    const user = await UserService.findUserById(id)
+    const user = await UserService.find_user_by_id(id)
     if (!user) return res.status(404).send('User not found')
 
-    if (user.password_reset_code === password_reset_code) {
-      user.password = password
-      user.password_reset_code = null
-      user.save()
-      return res.status(200).send(`Users' password has been updated`)
+    const updated = await UserService.update_password(user, password_reset_code, password)
+    if (updated) {
+      return res.status(200).send(`Users' password has been updated successfully`)
     }
 
     return res.status(400).send(`Failed to update users' password`)

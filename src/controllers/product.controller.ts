@@ -1,38 +1,33 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import { uploadPicture } from '../utils'
-import { product_schema } from '../schema'
 import { ProductService } from '../services'
 import { ProductInput } from '../schema/product'
 
-const getAllProducts = async (_: Request, res: Response) => {
+const get_all_products_handler: RequestHandler = async (_: Request, res: Response) => {
   try {
     const all_products = await ProductService.getAllProducts()
     return res.status(200).send(all_products)
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error!')
   }
 }
 
-const getOneProduct = async (req: Request, res: Response) => {
-  const { id } = req.params
+const get_single_product_handler: RequestHandler = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params
     const product = await ProductService.findById(id)
     return res.status(200).send(product)
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error!')
   }
 }
 
-const createProduct = async (
+const create_product_handler: RequestHandler = async (
   req: Request<{}, {}, ProductInput>, 
   res: Response
 ) => {
   try {
-    const user = res.locals.user
-    const body = product_schema.parse(req.body)
-
-    if (user.role !== 'admin') 
-      return res.status(401).send('Only admins can create products.')
+    const body = req.body
 
     if (req.file) {
       const response = await uploadPicture(req.file.path)
@@ -40,13 +35,13 @@ const createProduct = async (
       return res.status(201).send(`Product ${product.name} created.`)
     }
     
-    throw new Error('Please provide a picture for the product.');
+    return res.status(400).send('Please provide a picture for the product.');
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error!')
   }
 }
 
-const filterGender = async (req: Request, res: Response) => {
+const filter_gender_handler: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { query } = req.params
     const found_products = await ProductService.filterQuery(query) 
@@ -55,13 +50,13 @@ const filterGender = async (req: Request, res: Response) => {
     
     return res.status(200).send(found_products)
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error!')
   }
 }
 
 export default {
-  filterGender,
-  getOneProduct,
-  createProduct,
-  getAllProducts,
+  filter_gender_handler,
+  create_product_handler,
+  get_all_products_handler,
+  get_single_product_handler,
 }

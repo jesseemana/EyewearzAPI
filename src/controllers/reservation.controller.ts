@@ -1,9 +1,9 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import { BookingService }from '../services'
 import { booking_schema } from '../schema'
 import { BookingInput } from '../schema/booking'
 
-const getAppointments = async (_: Request, res: Response) => {
+const getAppointmentsHandler: RequestHandler = async (_req: Request, res: Response) => {
   try {
     const bookings = await BookingService.getBookings()
     return res.status(200).send({ bookings })
@@ -12,7 +12,7 @@ const getAppointments = async (_: Request, res: Response) => {
   }
 }
 
-const bookAppointment = async (
+const createAppointmentHandler: RequestHandler = async (
   req: Request<{}, {}, BookingInput>, 
   res: Response
 ) => {
@@ -26,6 +26,6 @@ const bookAppointment = async (
 }
 
 export default {
-  getAppointments,
-  bookAppointment,
+  getAppointmentsHandler,
+  createAppointmentHandler,
 }
