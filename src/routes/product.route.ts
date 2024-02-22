@@ -21,7 +21,7 @@ const router = Router()
  *       404:
  *         descriptions: No products found
  */
-router.get('/', ProductController.getAllProductsHandler)
+router.get('/', ProductController.get_all_products_handler)
 
 /**
 *  @openapi
@@ -45,7 +45,7 @@ router.get('/', ProductController.getAllProductsHandler)
 *       404:
 *         description: Product not found
 */
-router.get('/:id', ProductController.getOneProductHandler)
+router.get('/:id', ProductController.get_single_product_handler)
 
 /**
 *  @openapi
@@ -69,7 +69,7 @@ router.get('/:id', ProductController.getOneProductHandler)
 *       404:
 *         description: Product not found
 */
-router.post('/filter/:query', ProductController.filterGenderHandler)
+router.post('/filter/:query', ProductController.filter_gender_handler)
 
 /**
  * @openapi
@@ -111,7 +111,7 @@ router.post('/filter/:query', ProductController.filterGenderHandler)
 router.post(
   '/create', 
   [upload.single('file'), require_admin], 
-  ProductController.createProductHandler
+  ProductController.create_product_handler
 )
 
 export default router
