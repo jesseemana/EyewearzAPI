@@ -7,15 +7,15 @@ import { FilterQuery, UpdateQuery } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
 import { private_fields } from '../models/user.model'
 
-const createSession = async ({ user_id }: { user_id: string }) => {
+const create_session = async ({ user_id }: { user_id: string }) => {
   return SessionModel.create({ user_id })
 }
 
-const findSessionById = async (id: string) => {
+const find_session_by_id = async (id: string) => {
   return SessionModel.findById(id)
 }
 
-const signAccessToken = (user: DocumentType<User>, session: DocumentType<Session>): string => {
+const sign_access_token = (user: DocumentType<User>, session: DocumentType<Session>): string => {
   const user_payload = omit(user.toJSON(), private_fields)
   const access_token = signJwt(
     { ...user_payload, session }, 
@@ -25,13 +25,13 @@ const signAccessToken = (user: DocumentType<User>, session: DocumentType<Session
   return access_token 
 }
 
-const destroySession = async (filter: FilterQuery<Session>, update: UpdateQuery<Session>) => {
+const destroy_session = async (filter: FilterQuery<Session>, update: UpdateQuery<Session>) => {
   return SessionModel.updateOne(filter, update)
 }
 
 export default {
-  createSession, 
-  destroySession,
-  signAccessToken, 
-  findSessionById,
+  create_session, 
+  destroy_session,
+  sign_access_token, 
+  find_session_by_id,
 }
