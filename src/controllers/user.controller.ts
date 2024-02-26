@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express'
-import { LoginInput, ResetInput, UserInput } from '../schema/user'
+import { ForgotInput, ResetInput, UserInput } from '../schema/user'
 import { UserService }from '../services'
 import { log } from '../utils'
 
@@ -30,7 +30,7 @@ const create_user_handler: RequestHandler = async (
 }
 
 const forgot_password_handler: RequestHandler = async (
-  req: Request<{}, {}, LoginInput>, 
+  req: Request<{}, {}, ForgotInput>, 
   res: Response
 ) => {
   try {
@@ -39,10 +39,10 @@ const forgot_password_handler: RequestHandler = async (
     const user = await UserService.find_user_by_email(email)
     if (!user) return res.status(404).send('User not found')
 
-    await UserService.update_reset_code(user)
+    const password_reset_code = await UserService.update_reset_code(user)
 
     // send reset email link to user here
-    const link = `${BASE_URL}/reset/${user._id}/${user.password_reset_code}`
+    const link = `${BASE_URL}/reset/${user._id}/${password_reset_code}`
     log.info(`Password reset link: ${link}`)
 
     return res.status(200).send('Email reset link sent to user')

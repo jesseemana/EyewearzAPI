@@ -145,6 +145,10 @@ export const login_schema = object({
     .max(64, "Cannot be more than 64 characters long."),
 })
 
+export const forgot_schema = object({
+  email: string({ required_error: 'Email is required' }).email('Enter a valid email').trim().toLowerCase(),
+})
+
 
 export const reset_schema = object({
   params: object({
@@ -174,4 +178,5 @@ export const reset_schema = object({
 
 export type UserInput = TypeOf<typeof user_schema>
 export type LoginInput = TypeOf<typeof login_schema>
+export type ForgotInput = TypeOf<typeof forgot_schema>
 export type ResetInput = TypeOf<typeof reset_schema>
