@@ -25,6 +25,7 @@ const update_reset_code = async (user: DocumentType<User>) => {
   const password_reset_code = generate_code()
   user.password_reset_code = password_reset_code
   user.save()
+  return user.password_reset_code
 }
 
 const update_password = async (user: DocumentType<User>, password_reset_code: string, password: string) => {
