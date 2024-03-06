@@ -5,7 +5,7 @@ interface UploadResponse {
   cloudinary_id: string
 }
 
-const uploadPicture = async (picture: string): Promise<UploadResponse> => {
+const upload_picture = async (picture: string): Promise<UploadResponse> => {
   const response = await cloudinary.uploader.upload(picture)
   return {
     image: response.url,
@@ -13,4 +13,4 @@ const uploadPicture = async (picture: string): Promise<UploadResponse> => {
   }
 }
 
-export default uploadPicture
+export default upload_picture
