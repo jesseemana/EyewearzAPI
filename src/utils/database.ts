@@ -1,14 +1,14 @@
 import mongoose, { ConnectOptions } from 'mongoose'
 import log from './logger'
 
-
 export class Database {
   protected dbUri: string
   protected options: ConnectOptions
   private static unique_instance: Database = new Database()
 
-  constructor() {
+  private constructor() {
     this.options = {
+      dbName: 'Store API',
       autoIndex: false,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
@@ -23,19 +23,13 @@ export class Database {
 
   connect() { 
     mongoose.connect(this.dbUri)
-    mongoose.connection.on('connected', () => {
-      log.info('Database connected...')
-    })
-    mongoose.connection.on('error', (error: string) => {
-      log.error(`Error connecting to database: ${error}.`)
-    })
-    mongoose.connection.on('disconnected', () => {
-      log.warn('Mongoose database has been disconnected.')
-    })
+    mongoose.connection.on('connected', () => log.info('Database connected...'))
+    mongoose.connection.on('disconnected', () => log.warn('Mongoose database has been disconnected.'))
+    mongoose.connection.on('error', (error: string) => log.error(`Error connecting to database: ${error}.`))
   }
 
   disconnect() {
     mongoose.connection.close()
-    log.warn('Database connection closed due to app termination.')  
+    log.fatal('Database connection closed due to app termination.')  
   }
 }
