@@ -1,16 +1,16 @@
-import log from './logger'
-import { Database } from './database'
-import swaggerDocs from './swagger'
-import { signJwt, verifyToken } from './jwt'
-import { generate_code } from './generate-code'
-import uploadPicture from './upload-picture'
+import log from './logger';
+import { signJwt, verifyToken } from './jwt';
+import { Database } from './database';
+import { sendEmail } from './mailer';
+import { generateCode } from './generate-code';
+import { uploadPicture } from './upload-picture';
 
 export {
   log, 
   Database, 
-  signJwt, 
+  sendEmail,
+  generateCode,
   verifyToken, 
-  generate_code,
-  swaggerDocs,
-  uploadPicture
+  signJwt, 
+  uploadPicture,
 }
