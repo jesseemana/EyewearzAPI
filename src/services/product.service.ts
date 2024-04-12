@@ -1,30 +1,44 @@
 import { ProductModel } from '../models'
 import { Product } from '../models/product.model'
 
-async function getAllProducts() {
-  return ProductModel.find({}).limit(6)
+async function getAllProducts(limit: number, skip: number) {
+  const products = ProductModel.find({})
+    .limit(limit)
+    .skip(skip);
+
+  return products;
+}
+
+async function countTotalProducts() {
+  const total = await ProductModel.estimatedDocumentCount();
+  return total;
 }
 
 async function findById(id: string) {
-  return ProductModel.findById(id)
+  const product = ProductModel.findById(id);
+  return product;
 }
 
 async function createProduct(data: Product) {
-  return ProductModel.create(data)
+  const product = ProductModel.create(data);
+  return product;
 }
 
 async function filterQuery(query: string) {
-  return ProductModel.find({ query })
+  const product = ProductModel.find({ query });
+  return product;
 }
 
 async function filterByCategory(category: string) {
-  return ProductModel.find({ category })
+  const product =ProductModel.find({ category: category });
+  return product;
 }
 
 export default {
-  findById,
-  filterQuery,
+  countTotalProducts,
   createProduct,
   getAllProducts,
+  findById,
+  filterQuery,
   filterByCategory,
 }

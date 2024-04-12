@@ -1,22 +1,26 @@
-import { omit } from 'lodash'
-import { signJwt } from '../utils'
-import { SessionModel } from '../models'
-import { User } from '../models/user.model'
-import { Session } from '../models/session.model'
-import { FilterQuery, UpdateQuery } from 'mongoose'
-import { DocumentType } from '@typegoose/typegoose'
-import { private_fields } from '../models/user.model'
+import { omit } from 'lodash';
+import { signJwt } from '../utils';
+import { FilterQuery, UpdateQuery } from 'mongoose';
+import { User } from '../models/user.model';
+import { Session } from '../models/session.model';
+import { SessionModel } from '../models';
+import { DocumentType } from '@typegoose/typegoose';
 
-const create_session = async ({ user_id }: { user_id: string }) => {
-  return SessionModel.create({ user_id })
+async function createSession({ user_id }: { user_id: string }) {
+  const session = await SessionModel.create({ user_id });
+  return session;
 }
 
-const find_session_by_id = async (id: string) => {
-  return SessionModel.findById(id)
+async function findSessionById(id: string) {
+  const session = SessionModel.findById(id);
+  return session;
 }
 
-const sign_access_token = (user: DocumentType<User>, session: DocumentType<Session>): string => {
-  const user_payload = omit(user.toJSON(), private_fields)
+async function signAccessToken(
+  user: DocumentType<User>, 
+  session: DocumentType<Session>
+): Promise<string> {
+  const user_payload = omit(user.toJSON(), 'password', 'password_reset_code')
   const access_token = signJwt(
     { ...user_payload, session }, 
     String(process.env.ACCESS_TOKEN_PRIVATE_KEY), 
@@ -25,13 +29,18 @@ const sign_access_token = (user: DocumentType<User>, session: DocumentType<Sessi
   return access_token 
 }
 
-const destroy_session = async (filter: FilterQuery<Session>, update: UpdateQuery<Session>) => {
-  return SessionModel.updateOne(filter, update)
+async function destroySession(
+  filter: FilterQuery<Session>, 
+  update: UpdateQuery<Session>
+) {
+  const updated = await SessionModel.updateOne(filter, update);
+  if (updated) return true;
+  return false;
 }
 
 export default {
-  create_session, 
-  destroy_session,
-  sign_access_token, 
-  find_session_by_id,
+  signAccessToken, 
+  destroySession,
+  createSession, 
+  findSessionById,
 }
