@@ -4,7 +4,7 @@ import { limiter, requireUser, validateInput } from '../middleware';
 
 const router = Router();
 
-router.get('/sessions', validateInput, AuthController.getSessions);
+router.get('/sessions', AuthController.getSessions);
 
 router.post('/login', [validateInput, limiter], AuthController.loginHandler);
 
