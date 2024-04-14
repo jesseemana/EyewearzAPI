@@ -6,8 +6,16 @@ import { Session } from '../models/session.model';
 import { SessionModel } from '../models';
 import { DocumentType } from '@typegoose/typegoose';
 
-async function createSession({ user_id }: { user_id: string }) {
-  const session = await SessionModel.create({ user_id });
+const findSessions = async () => {
+  const sessions = await SessionModel.find({})
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+  return sessions;
+}
+
+const createSession = async ({ user_id }: { user_id: string }) => {
+  const session = await SessionModel.create({ user: user_id });
   return session;
 }
 
@@ -40,6 +48,7 @@ async function destroySession(
 
 export default {
   signAccessToken, 
+  findSessions,
   destroySession,
   createSession, 
   findSessionById,

@@ -4,7 +4,9 @@ import { limiter, requireUser, validateInput } from '../middleware';
 
 const router = Router();
 
-router.post('/login', validateInput, limiter, AuthController.loginHandler);
+router.get('/sessions', validateInput, AuthController.getSessions);
+
+router.post('/login', [validateInput, limiter], AuthController.loginHandler);
 
 router.delete('/logout', requireUser, AuthController.logoutHandler);
 
