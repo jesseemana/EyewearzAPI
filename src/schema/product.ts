@@ -8,6 +8,7 @@ const productSchema = object({
     required_error: 'Image is required' 
   }).trim(),
   category: z.enum(['sunglasses', 'prescription', 'bluelight', 'kids']),
+  featured: z.boolean(),
   gender: z.enum(['male', 'female', 'unisex']),
   description: string({ 
     required_error: 'Product description is required' 

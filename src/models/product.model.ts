@@ -17,6 +17,9 @@ export class Product {
   @prop({ required: true })
   category: string
 
+  @prop({ default: false })
+  featured: boolean
+
   @prop({ required: true })
   gender: string
 
