@@ -29,16 +29,15 @@ export const loginSchema = object({
   }).min(8, "Must not be less than 8 characters.").max(24, "Cannot be more than 24 characters long."),
 });
 
-export const forgotSchema = object({
-  email: string({ required_error: 'Email is required' }).email('Enter a valid email').trim().toLowerCase(),
-});
-
 export const resetSchema = object({
   params: object({
     id: string({ required_error: 'Id is required' }).trim(),
     reset_code: string({ required_error: 'Password reset code is required' }).trim(),
   }),
   body: object({
+    email: string({ 
+      required_error: 'Email is required', 
+    }).email('Enter a valid email').trim().toLowerCase(),
     password: string({
       required_error: 'Please provide a password'
     }).min(8, "Must not be less than 8 characters.")
@@ -56,4 +55,3 @@ export const resetSchema = object({
 export type UserInput = TypeOf<typeof userSchema>;
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type ResetInput = TypeOf<typeof resetSchema>;
-export type ForgotInput = TypeOf<typeof forgotSchema>;
