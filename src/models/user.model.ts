@@ -23,7 +23,7 @@ import { log } from '../utils';
 
 @modelOptions({
   options: {
-    allowMixed: Severity.ALLOW
+    allowMixed: Severity.ALLOW,
   }
 })
 
@@ -47,7 +47,7 @@ export class User {
   role: string;
 
   @prop()
-  password_reset_code: string | null;
+  reset_code: string | null;
 
   async verifyPassword(this: DocumentType<User>, candidate_password: string) {
     try {

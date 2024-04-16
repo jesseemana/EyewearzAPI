@@ -1,27 +1,27 @@
-import { User } from './user.model'
-import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import { User } from './user.model';
+import { getModelForClass, prop, Ref } from '@typegoose/typegoose';
 
 export class Appointment {
   @prop({ ref: () => User })
-  user: Ref<User>
+  user: Ref<User>;
 
   @prop({ required: true })
-  phone: string
+  phone: string;
 
   @prop({ required: true })
-  reason: string
+  reason: string;
 
   @prop({ required: true })
-  location: string
+  location: string;
 
   @prop({ required: true })
-  reservation_data: Date
+  date: Date;
 }
 
 const AppointmentModel = getModelForClass(Appointment, {
   schemaOptions: {
-    timestamps: true
+    timestamps: true,
   }
 })
 
-export default AppointmentModel
+export default AppointmentModel;
