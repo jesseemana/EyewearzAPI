@@ -1,13 +1,13 @@
-import { Router } from 'express'
-import { require_admin } from '../middleware'
-import { OrderController } from '../controllers'
+import { Router } from 'express';
+import { requireAdmin } from '../middleware';
+import { OrderController } from '../controllers';
 
-const router = Router()
+const router = Router();
 
-router.get('/', require_admin, OrderController.get_orders)
+router.get('/', requireAdmin, OrderController.getOrders);
 
-router.post('/checkout', OrderController.create_order)
+router.post('/checkout', OrderController.createOrder);
 
-router.get('/:id', require_admin, OrderController.get_single_order)
+router.get('/:id', requireAdmin, OrderController.getSingleOrder);
 
-export default router
+export default router;
