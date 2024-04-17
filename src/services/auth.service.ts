@@ -14,8 +14,8 @@ const findSessions = async () => {
   return sessions;
 }
 
-const createSession = async ({ user_id }: { user_id: string }) => {
-  const session = await SessionModel.create({ user: user_id });
+const createSession = async (data: Session) => {
+  const session = await SessionModel.create(data);
   return session;
 }
 

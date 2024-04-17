@@ -17,12 +17,16 @@ const loginHandler = async (
     const { email, password } = req.body;
 
     const user = await UserService.findByEmail(email);
-    if (!user) return res.status(404).send('User not found.');
+    if (!user) return res.status(401).send('User not found.');
     if (!user.verifyPassword(password)) {
       return res.status(401).send('Password is incorrect.');
     }
 
-    const session = await AuthService.createSession({ user_id: String(user._id) });
+    let payload: any = {}
+    payload['ip'] = req.ip;
+    payload['user_agent'] = req.headers['user-agent'];
+
+    const session = await AuthService.createSession({ user: user._id, ...payload });
 
     const access_token = await AuthService.signAccessToken(user, session);
 
@@ -50,6 +54,7 @@ const logoutHandler = async (_req: Request, res: Response) => {
     return res.status(500).send('Internal Server Error.');
   }
 }
+
 
 export default {
   loginHandler,
