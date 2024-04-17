@@ -1,10 +1,11 @@
-import { Router } from 'express'
-import { BookingController } from '../controllers'
-import { require_admin, require_user } from '../middleware'
+import { Router } from 'express';
+import { BookingController } from '../controllers';
+import { requireAdmin, requireUser, validateInput } from '../middleware';
 
-const router = Router()
+const router = Router();
 
-router.post('/', require_admin, BookingController.getAppointmentsHandler)
-router.post('/create', require_user, BookingController.createAppointmentHandler)
+router.post('/', requireAdmin, BookingController.getAppointmentsHandler);
 
-export default router
+router.post('/create', [requireUser, validateInput], BookingController.createAppointmentHandler);
+
+export default router;
