@@ -22,6 +22,25 @@ export const userSchema = object({
   path: ['confirm_password'],
 });
 
+export const updateUserSchema = object({
+  params: object({
+    user_id: string({ required_error: 'Provide a user id' }),
+  }),
+  body: object({
+    first_name: string({
+      required_error: 'First name is required'
+    }).trim(),
+    last_name: string({
+      required_error: 'Last name is required'
+    }).trim(),
+    role: z.enum(['admin', 'user']),
+    email: string().email('Enter a valid email')
+      .toLowerCase()
+      .trim()
+      .optional(),
+  })
+})
+
 export const loginSchema = object({
   email: string({ required_error: 'Email is required' }).email('Enter a valid email').trim().toLowerCase(),
   password: string({
@@ -53,5 +72,6 @@ export const resetSchema = object({
 });
 
 export type UserInput = TypeOf<typeof userSchema>;
+export type UpdateUserInput = TypeOf<typeof updateUserSchema>;
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type ResetInput = TypeOf<typeof resetSchema>;
