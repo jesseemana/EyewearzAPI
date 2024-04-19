@@ -1,15 +1,19 @@
 import { Router } from 'express';
-import { validateInput, requireUser } from '../middleware';
+import { validateInput, requireUser, requireAdmin } from '../middleware';
 import { UserController } from '../controllers';
 
 const router = Router();
 
-router.route('/').post(validateInput, UserController.createUserHandler);
+router.post('/', validateInput, UserController.createUserHandler);
 
-router.route('/me').get(requireUser, UserController.getCurrentUserHandler);
+router.get('/me', requireUser, UserController.getCurrentUserHandler);
 
-router.route('/forgot-password').post(validateInput, UserController.forgotPasswordHandler);
+router.patch('/update', requireUser, UserController.updateUserHandler);
 
-router.route('/:id/reset/:reset_code').post(validateInput, UserController.resetPasswordHandler);
+router.patch('/admin', requireAdmin, UserController.createAdmin);
+
+router.post('/forgot-password', validateInput, UserController.forgotPasswordHandler);
+
+router.post('/:id/reset/:reset_code', validateInput, UserController.resetPasswordHandler);
 
 export default router;
