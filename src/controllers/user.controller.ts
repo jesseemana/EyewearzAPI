@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ResetInput, UpdateUserInput, UserInput } from '../schema/user';
-import { UserService }from '../services';
+import { UserService } from '../services';
 import { generateCode, log, sendEmail } from '../utils';
 
 
@@ -54,7 +54,7 @@ async function updateUserHandler(
 }
 
 
-async function createAdmin(
+async function manageAdmin(
   req: Request<UpdateUserInput['params'], {}, UpdateUserInput['body']>, 
   res: Response
 ) {
@@ -137,9 +137,9 @@ async function resetPasswordHandler(
 
 export default {
   forgotPasswordHandler, 
-  createUserHandler,
-  createAdmin, 
   updateUserHandler,
+  createUserHandler,
+  manageAdmin, 
   getCurrentUserHandler, 
   resetPasswordHandler, 
 }

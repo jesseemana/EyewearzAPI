@@ -4,13 +4,13 @@ import { UserController } from '../controllers';
 
 const router = Router();
 
-router.post('/', validateInput, UserController.createUserHandler);
-
 router.get('/me', requireUser, UserController.getCurrentUserHandler);
 
 router.patch('/update', requireUser, UserController.updateUserHandler);
 
-router.patch('/admin', requireAdmin, UserController.createAdmin);
+router.post('/', validateInput, UserController.createUserHandler);
+
+router.patch('/admin', requireAdmin, UserController.manageAdmin);
 
 router.post('/forgot-password', validateInput, UserController.forgotPasswordHandler);
 
