@@ -47,7 +47,6 @@ export const updateUserSchema = object({
     email: string().email('Enter a valid email')
       .toLowerCase()
       .trim()
-      .optional(),
   })
 })
 
