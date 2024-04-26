@@ -13,6 +13,9 @@ export class Product {
   image_path: string;
 
   @prop({ required: true })
+  cloudinary_id: string;
+
+  @prop({ required: true })
   price: string;
 
   @prop({ required: true })
@@ -26,9 +29,6 @@ export class Product {
 
   @prop({ required: true })
   description: string;
-
-  @prop({ required: true })
-  cloudinary_id: string;
 }
 
 const ProductModel = getModelForClass(Product, {
