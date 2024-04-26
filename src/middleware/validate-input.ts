@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AnyZodObject } from 'zod';
 
 const validateInput = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
@@ -6,12 +6,12 @@ const validateInput = (schema: AnyZodObject) => (req: Request, res: Response, ne
     schema.parse({
       body: req.body,
       query: req.query,
-      paramas: req.params,
-    })
+      params: req.params,
+    });
     next();
   } catch (err: any) {
-    res.status(400).send(err.errors);
+    return res.status(400).send(err.errors);
   }
-}
+};
 
 export default validateInput;
