@@ -1,17 +1,16 @@
-// import { nanoid } from 'nanoid';
 import { getModelForClass, prop, index } from '@typegoose/typegoose';
 
 @index({ product_id: 1 })
 
 export class Product {
-  // @prop({ required: true, default: nanoid() })
-  // product_id: string;
+  @prop({ required: true })
+  product_id: string;
 
   @prop({ required: true })
   name: string;
 
   @prop({ required: true })
-  image: string;
+  image_path: string;
 
   @prop({ required: true })
   price: string;
