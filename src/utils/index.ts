@@ -3,7 +3,7 @@ import { signJwt, verifyToken } from './jwt';
 import { Database } from './database';
 import { sendEmail } from './mailer';
 import { generateCode } from './generate-code';
-import { uploadPicture } from './upload-picture';
+import uploadPicture from './upload-picture';
 
 export {
   log, 
