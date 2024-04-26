@@ -1,6 +1,6 @@
-import { userSchema, loginSchema } from './user'
-import bookingSchema from './booking'
-import productSchema from './product'
+import { userSchema, loginSchema } from './user';
+import bookingSchema from './booking';
+import { productSchema } from './product';
 
 export {
   userSchema,

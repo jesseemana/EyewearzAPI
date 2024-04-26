@@ -1,5 +1,6 @@
 import { string, object, TypeOf, z } from 'zod';
 
+
 export const userSchema = object({
   first_name: string({
     required_error: 'First name is required'
@@ -10,6 +11,9 @@ export const userSchema = object({
   email: string({
     required_error: 'Provide an email address'
   }).email('Enter a valid email').toLowerCase().trim(),
+  location: string({
+    required_error: 'Location is required'
+  }).trim(),
   role: z.enum(['admin', 'user']),
   password: string({
     required_error: 'Password is required',
@@ -22,9 +26,12 @@ export const userSchema = object({
   path: ['confirm_password'],
 });
 
+
 export const updateUserSchema = object({
   params: object({
-    user_id: string({ required_error: 'Provide a user id' }),
+    user_id: string({ 
+      required_error: 'Provide a user id' 
+    }),
   }),
   body: object({
     first_name: string({
@@ -32,6 +39,9 @@ export const updateUserSchema = object({
     }).trim(),
     last_name: string({
       required_error: 'Last name is required'
+    }).trim(),
+    location: string({
+      required_error: 'Location is required'
     }).trim(),
     role: z.enum(['admin', 'user']),
     email: string().email('Enter a valid email')
@@ -41,6 +51,7 @@ export const updateUserSchema = object({
   })
 })
 
+
 export const loginSchema = object({
   email: string({ required_error: 'Email is required' }).email('Enter a valid email').trim().toLowerCase(),
   password: string({
@@ -48,10 +59,15 @@ export const loginSchema = object({
   }).min(8, "Must not be less than 8 characters.").max(24, "Cannot be more than 24 characters long."),
 });
 
+
 export const resetSchema = object({
   params: object({
-    id: string({ required_error: 'Id is required' }).trim(),
-    reset_code: string({ required_error: 'Password reset code is required' }).trim(),
+    id: string({ 
+      required_error: 'Id is required' 
+    }).trim(),
+    reset_code: string({ 
+      required_error: 'Password reset code is required' 
+    }).trim(),
   }),
   body: object({
     email: string({ 
@@ -72,6 +88,6 @@ export const resetSchema = object({
 });
 
 export type UserInput = TypeOf<typeof userSchema>;
-export type UpdateUserInput = TypeOf<typeof updateUserSchema>;
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type ResetInput = TypeOf<typeof resetSchema>;
+export type UpdateUserInput = TypeOf<typeof updateUserSchema>;

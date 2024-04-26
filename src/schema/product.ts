@@ -1,8 +1,8 @@
 import { string, object, TypeOf, z } from 'zod';
 
-const productSchema = object({
+export const productSchema = object({
   params: object({
-   id: string({ 
+    product_id: string({ 
       required_error: 'product id is required.', 
     })
   }),
@@ -23,5 +23,3 @@ const productSchema = object({
 });
 
 export type ProductInput = TypeOf<typeof productSchema>;
-
-export default productSchema;
