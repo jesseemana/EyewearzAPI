@@ -1,9 +1,11 @@
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 import { getModelForClass, prop, index } from '@typegoose/typegoose';
 
 @index({ product_id: 1 })
 
 export class Product {
-  @prop({ required: true })
+  @prop({ required: true, default: uuidv4() })
   product_id: string;
 
   @prop({ required: true })
