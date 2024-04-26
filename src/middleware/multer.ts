@@ -5,7 +5,7 @@ const upload = multer({
   storage: multer.diskStorage({
     filename: (_req, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
       let ext = path.extname(file.originalname);
-      cb(null, `IMG${Date.now}${ext}`);
+      cb(null, `IMG-${Date.now()}${ext}`);
     }
   }),
 
