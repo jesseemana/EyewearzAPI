@@ -23,16 +23,4 @@ router.patch(
   UserController.manageAdmin
 )
 
-router.post(
-  '/forgot-password', 
-  validateInput(resetSchema), 
-  UserController.forgotPasswordHandler
-)
-
-router.post(
-  '/:id/reset/:reset_code', 
-  validateInput(resetSchema), 
-  UserController.resetPasswordHandler
-)
-
 export default router;
