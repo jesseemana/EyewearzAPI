@@ -1,10 +1,12 @@
-import { userSchema, loginSchema } from './user';
-import bookingSchema from './booking';
-import { productSchema } from './product';
+import bookingSchema from './booking.schema'
+import { productSchema } from './product.schema'
+import { userSchema, loginSchema, updateUserSchema, resetSchema } from './user.schema'
 
 export {
   userSchema,
-  loginSchema,
   bookingSchema,
-  productSchema
+  loginSchema,
+  resetSchema,
+  productSchema,
+  updateUserSchema,
 }

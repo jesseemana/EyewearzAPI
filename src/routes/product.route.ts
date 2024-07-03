@@ -1,19 +1,25 @@
-import { Router } from 'express';
-import { requireAdmin, upload, validateInput } from '../middleware';
-import { ProductController } from '../controllers';
+import { Router } from 'express'
+import { requireAdmin, upload, validateInput } from '../middleware'
+import { ProductController } from '../controllers'
+import { productSchema } from '../schema'
 
-const router = Router();
+const router = Router()
 
-router.get('/', ProductController.getAllProductsHandler);
+router.route('/')
+  .get(ProductController.getAllProductsHandler)
+  .post(
+    [upload.single('file'), requireAdmin, validateInput(productSchema)], 
+    ProductController.createProductHandler
+  )
 
-router.post('/edit/:id', [requireAdmin, validateInput], ProductController.editProductHandler);
+router.get('/featured', ProductController.getFeaturedProductsHandler)
 
-router.get('/featured', ProductController.getFeaturedProductsHandler);
+router.get('/sunglasses', ProductController.getSunGlassesHandler)
 
-router.post('/filter/:query', ProductController.searchProductsHandler);
+router.get('/eyeglasses', ProductController.getEyeGlassesHandler)
 
-router.get('/:id', ProductController.getSingleProductHandler);
+router.get('/:id', ProductController.getSingleProductHandler)
 
-router.post('/create', [upload.single('file'), requireAdmin, validateInput], ProductController.createProductHandler);
+router.post('/edit/:id', [requireAdmin], ProductController.editProductHandler)
 
-export default router;
+export default router

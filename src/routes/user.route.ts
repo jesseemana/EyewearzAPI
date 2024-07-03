@@ -1,19 +1,38 @@
-import { Router } from 'express';
-import { validateInput, requireUser, requireAdmin } from '../middleware';
-import { UserController } from '../controllers';
+import { Router } from 'express'
+import { validateInput, requireUser, requireAdmin } from '../middleware'
+import { UserController } from '../controllers'
+import { userSchema, updateUserSchema, resetSchema } from '../schema'
 
-const router = Router();
+const router = Router()
 
-router.get('/me', requireUser, UserController.getCurrentUserHandler);
+router.route('/')
+  .get(UserController.getAllUsers)
+  .post(validateInput(userSchema), UserController.createUserHandler)
 
-router.patch('/update', requireUser, UserController.updateUserHandler);
+router.get('/me', requireUser, UserController.getCurrentUserHandler)
 
-router.post('/', validateInput, UserController.createUserHandler);
+router.patch(
+  '/update', 
+  [requireUser, validateInput(updateUserSchema)], 
+  UserController.updateUserHandler
+)
 
-router.patch('/admin', requireAdmin, UserController.manageAdmin);
+router.patch(
+  '/admin', 
+  [requireAdmin, validateInput(updateUserSchema)], 
+  UserController.manageAdmin
+)
 
-router.post('/forgot-password', validateInput, UserController.forgotPasswordHandler);
+router.post(
+  '/forgot-password', 
+  validateInput(resetSchema), 
+  UserController.forgotPasswordHandler
+)
 
-router.post('/:id/reset/:reset_code', validateInput, UserController.resetPasswordHandler);
+router.post(
+  '/:id/reset/:reset_code', 
+  validateInput(resetSchema), 
+  UserController.resetPasswordHandler
+)
 
 export default router;
