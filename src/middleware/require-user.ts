@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-const requireUser = (_req: Request, res: Response, next: NextFunction) => {
-  const user = res.locals.user;
+const requireUser = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user;
   if (!user) return res.sendStatus(403);
   next();
 }

@@ -4,7 +4,7 @@ import validateInput from './validate-input';
 import errorHandler from './error-handler';
 import requireUser from './require-user';
 import requireAdmin from './require-admin';
-import deserializeUser from './deserialize-user';
+import deserializeUser from './auth';
 
 export {
   upload,
