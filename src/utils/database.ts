@@ -8,7 +8,7 @@ export class Database {
 
   private constructor() {
     this.options = {
-      dbName: 'Store API',
+      dbName: 'Store DB',
       autoIndex: false,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
