@@ -1,27 +1,27 @@
-import { Request, RequestHandler, Response } from 'express'
-import { BookingService }from '../services'
-import { booking_schema } from '../schema'
-import { BookingInput } from '../schema/booking'
+import { Request, Response } from 'express';
+import { BookingService }from '../services';
+import { BookingInput } from '../schema/booking.schema';
 
-const getAppointmentsHandler: RequestHandler = async (_req: Request, res: Response) => {
+async function getAppointmentsHandler(_req: Request, res: Response) {
   try {
-    const bookings = await BookingService.getBookings()
-    return res.status(200).send({ bookings })
+    const bookings = await BookingService.getBookings();
+    return res.status(200).send(bookings);
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error.');
   }
 }
 
-const createAppointmentHandler: RequestHandler = async (
+const createAppointmentHandler = async (
   req: Request<{}, {}, BookingInput>, 
   res: Response
 ) => {
-  const data = booking_schema.parse(req.body)
+  const data = req.body;
+  const user = res.locals.user;
   try {
-    const booking = await BookingService.createAppointment(data)
-    return res.send(200).send({ booking })
+    const booking = await BookingService.createAppointment({ user: user._id, ...data });
+    return res.send(200).send(booking);
   } catch (error) {
-    return res.status(500).send('Internal server error!')
+    return res.status(500).send('Internal Server Error.');
   }
 }
 

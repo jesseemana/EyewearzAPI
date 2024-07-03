@@ -5,9 +5,9 @@ const level = 'info'
 
 const log = logger({
   level,
-  // transport: {
-  //   target: 'pino-pretty'
-  // },
+  transport: {
+    target: 'pino-pretty'
+  },
   base: {
     pid: false
   },
