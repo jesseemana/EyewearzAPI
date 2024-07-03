@@ -13,13 +13,9 @@ router.route('/')
   )
 
 router.get('/featured', ProductController.getFeaturedProductsHandler)
-
 router.get('/sunglasses', ProductController.getSunGlassesHandler)
-
 router.get('/eyeglasses', ProductController.getEyeGlassesHandler)
-
 router.get('/:id', ProductController.getSingleProductHandler)
-
 router.post('/edit/:id', [requireAdmin], ProductController.editProductHandler)
 
 export default router
