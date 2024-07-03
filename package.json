@@ -1,10 +1,11 @@
 {
-  "name": "opticals-server",
+  "name": "optics-server",
   "version": "1.1.1",
-  "description": "A backend REST api for the opticals site",
+  "description": "A backend REST api for the optics site",
   "main": "server.ts",
   "scripts": {
     "build": "npm install && npx tsc",
+    "build:dev": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start": "node build/server.js"
   },
@@ -36,7 +37,6 @@
     "@types/express": "^4.17.21",
     "@types/express-rate-limit": "^6.0.0",
     "@types/helmet": "^4.0.0",
-    "@types/inversify": "^2.0.33",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/lodash": "^4.14.202",
     "@types/mongoose": "^5.11.97",
