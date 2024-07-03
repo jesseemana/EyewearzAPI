@@ -1,4 +1,6 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary'
+import log from './logger'
+import { UploadResponse } from '../types'
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -6,16 +8,28 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 })
 
-type UploadResponse = {
-  image_path: string
-  cloudinary_id: string
-}
+async function uploadPicture(file: Express.Multer.File): Promise<UploadResponse> {
+  try {
+    const image = file
+    const base64Image = Buffer.from(image.buffer).toString('base64')
+    const dataURI = `data:${image.mimetype};base64,${base64Image}`
 
-const uploadPicture = async (path: string): Promise<UploadResponse> => {
-  const response = await cloudinary.uploader.upload(path);
-  return {
-    image_path: response.url,
-    cloudinary_id: response.public_id,
+    const uploadResponse = await cloudinary.uploader.upload(dataURI, {
+      transformation: [
+        { width: 1000, crop: 'scale' },
+        { quality: 'auto' },
+        { fetch_format: 'auto' }
+      ],
+      folder: 'glasses',
+    })
+
+    return {
+      image_path: uploadResponse.url,
+      cloudinary_id: uploadResponse.public_id
+    }
+  } catch (error) {
+    log.error(`Error uploading picture: ${error}`)
+    throw new Error('Failed to upload picture')
   }
 }
 
