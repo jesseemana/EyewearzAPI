@@ -8,13 +8,13 @@ export class Database {
 
   private constructor() {
     this.options = {
-      dbName: 'Store DB',
+      dbName: 'StoreDB',
       autoIndex: false,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
     }
 
-    this.dbUri = String(process.env.MONGO_URI)
+    this.dbUri = process.env.MONGO_URI as string
   }
 
   public static getInstance(): Database {
@@ -23,7 +23,7 @@ export class Database {
 
   connect() { 
     mongoose.connect(this.dbUri)
-    mongoose.connection.on('connected', () => log.info('Database connected...'))
+    mongoose.connection.on('connected', () => log.info('Database connected.'))
     mongoose.connection.on('disconnected', () => log.warn('Mongoose database has been disconnected.'))
     mongoose.connection.on('error', (error: string) => log.error(`Error connecting to database: ${error}.`))
   }
