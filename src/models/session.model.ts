@@ -1,6 +1,8 @@
-import mongoose, { Schema, InferSchemaType } from 'mongoose'
+import mongoose, { Schema, InferSchemaType, Document } from 'mongoose'
 
-export type SessionType = InferSchemaType<typeof session_schema>
+type SessionType = InferSchemaType<typeof session_schema>
+
+export interface ISession extends SessionType, Document {}
 
 const session_schema = new Schema(
   {
@@ -18,6 +20,6 @@ const session_schema = new Schema(
   }
 )
 
-const SessionModel = mongoose.model('Session', session_schema)
+const SessionModel = mongoose.model<ISession>('Session', session_schema)
 
 export default SessionModel
