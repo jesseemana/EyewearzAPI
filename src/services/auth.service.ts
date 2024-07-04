@@ -18,7 +18,7 @@ const createSession = async (data: SessionType) => {
 }
 
 async function findSessionById(id: string) {
-  const session = SessionModel.findById(id)
+  const session = await SessionModel.findById(id)
   return session
 }
 
@@ -29,9 +29,9 @@ async function signAccessToken(user: IUser, session: SessionType): Promise<strin
     session: session 
   }
   const access_token = signJwt(
-    { ...payload }, // or send access token in cookie
+    { ...payload }, 
     process.env.ACCESS_TOKEN_PRIVATE_KEY as string, 
-    { expiresIn: process.env.ACCESS_TOKEN_TIME_TO_LIVE }
+    { expiresIn: '1d' }
   )
   return access_token 
 }

@@ -3,17 +3,17 @@ import UserModel, { IUser } from '../models/user.model'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 
 async function findAllUsers() {
-  const users = UserModel.find({})
+  const users = await UserModel.find({})
   return users
 }
 
 async function findUserById(id: string) {
-  const user = UserModel.findById(id)
+  const user = await UserModel.findById(id)
   return user
 }
 
 async function findByEmail(email: string) {
-  const user = UserModel.findOne({ email })
+  const user = await UserModel.findOne({ email })
   return user
 }
 
