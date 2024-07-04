@@ -19,9 +19,9 @@ async function loginHandler(
 
   const user = await UserService.findByEmail(email)
   if (!user) return res.status(401).json({ msg: 'User not found.' })
-  if (!user.verifyPassword(password)) {
+  const is_valid = await user.verifyPassword(password)
+  if (!is_valid) 
     return res.status(401).json({ msg: 'Password is incorrect.' })
-  }
 
   let payload: any = {}
   payload['ip'] = req.ip
@@ -30,6 +30,7 @@ async function loginHandler(
   const session = await AuthService.createSession({ 
     ...payload, 
     user: user._id, 
+    valid: true
   })
 
   const access_token = await AuthService.signAccessToken(user, session)
@@ -47,12 +48,11 @@ async function forgotPasswordHandler(
   const user = await UserService.findByEmail(email)
   if (!user) return res.status(404).json({ msg: 'User not found.' })
 
-  const reset_code = uuidv4()
-  user.reset_code = reset_code
+  user.reset_code = uuidv4()
   await user.save()
 
   // generate password reset link 
-  const link = `${process.env.BASE_URL as string}/${user._id.toString()}/reset/${reset_code}`
+  const link = `${process.env.BASE_URL as string}/${user._id.toString()}/reset/${user.reset_code}`
 
   log.info(`Password reset link: ${link}`)
 
