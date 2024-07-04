@@ -8,7 +8,7 @@ export class Database {
 
   private constructor() {
     this.options = {
-      dbName: 'StoreDB',
+      dbName: 'optics_store',
       autoIndex: false,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,

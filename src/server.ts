@@ -8,7 +8,6 @@ import {
   authRoute, 
   userRoute, 
   orderRoute, 
-  bookingRoute, 
   productRoute, 
 } from './routes'
 
@@ -34,7 +33,6 @@ app.use('/api/v1/orders', orderRoute)
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/user', userRoute)
 app.use('/api/v1/products', productRoute)
-app.use('/api/v1/reservation', bookingRoute)
 
 // Asynchronous error handling middleware
 app.use(errorHandler)
