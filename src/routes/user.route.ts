@@ -12,15 +12,9 @@ router.route('/')
 router.get('/me', requireUser, UserController.getCurrentUserHandler)
 
 router.patch(
-  '/update', 
+  '/:user_id/update', 
   [requireUser, validateInput(updateUserSchema)], 
   UserController.updateUserHandler
-)
-
-router.patch(
-  '/admin', 
-  [requireAdmin, validateInput(updateUserSchema)], 
-  UserController.manageAdmin
 )
 
 export default router;
