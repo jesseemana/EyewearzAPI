@@ -13,20 +13,22 @@ declare global {
   }
 }
 
-const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
+async function deserializeUser(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers
-  
   if (!authorization || !authorization.startsWith('Bearer ')) return next()
-
+    
   const token = authorization.split(' ')[1].trim()
-
   const decoded = verifyToken<DecodedType>(token, process.env.ACCESS_TOKEN_PUBLIC_KEY as string)
 
   if (decoded) { 
-    const user = await UserService.findByEmail(decoded.user.email)
-    const session = await AuthService.findSessionById(decoded.session._id)
-    if (!user || !session) 
+    const [user, session] = await Promise.all([
+      await UserService.findByEmail(decoded.user.email),
+      await AuthService.findSessionById(decoded.session._id)
+    ]) 
+    
+    if (!user || !session) {
       return res.status(401).json({ msg: 'Invalid user' })
+    }
 
     req.user = user.toObject()
     req.userId = user._id.toString()
