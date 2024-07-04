@@ -1,10 +1,8 @@
-import { omit } from 'lodash'
-import { signJwt, log } from '../utils'
 import { FilterQuery, UpdateQuery } from 'mongoose'
-import { User } from '../models/user.model'
-import { Session } from '../models/session.model'
-import { SessionModel } from '../models'
-import { DocumentType } from '@typegoose/typegoose'
+import { omit } from 'lodash'
+import { signJwt } from '../utils'
+import { IUser } from '../models/user.model'
+import SessionModel, { SessionType } from '../models/session.model'
 
 const findSessions = async () => {
   const sessions = await SessionModel.find({})
@@ -14,7 +12,7 @@ const findSessions = async () => {
   return sessions
 }
 
-const createSession = async (data: Session) => {
+const createSession = async (data: SessionType) => {
   const session = await SessionModel.create(data)
   return session
 }
@@ -24,7 +22,7 @@ async function findSessionById(id: string) {
   return session
 }
 
-async function signAccessToken(user: DocumentType<User>, session: DocumentType<Session>): Promise<string> {
+async function signAccessToken(user: IUser, session: SessionType): Promise<string> {
   const user_payload = omit(user.toJSON(), 'password', 'password_reset_code')
   const payload = { 
     user: user_payload, 
@@ -38,7 +36,7 @@ async function signAccessToken(user: DocumentType<User>, session: DocumentType<S
   return access_token 
 }
 
-async function destroySession(filter: FilterQuery<Session>, update: UpdateQuery<Session>) {
+async function destroySession(filter: FilterQuery<SessionType>, update: UpdateQuery<SessionType>) {
   const updated = await SessionModel.updateOne(filter, update)
   if (updated) return true
   return false

@@ -1,6 +1,5 @@
-import { UserModel } from '../models'
 import { omit } from 'lodash'
-import { User } from '../models/user.model'
+import UserModel, { IUser } from '../models/user.model'
 import { FilterQuery, UpdateQuery } from 'mongoose'
 
 async function findAllUsers() {
@@ -18,17 +17,17 @@ async function findByEmail(email: string) {
   return user
 }
 
-async function registerUser(data: Partial<User>) {
+async function registerUser(data: Partial<IUser>) {
   const new_user = await UserModel.create(data)
   return omit(new_user.toJSON(), 'password')
 }
 
-async function updateUser(filter: FilterQuery<User>, update: UpdateQuery<User>) {
+async function updateUser(filter: FilterQuery<IUser>, update: UpdateQuery<IUser>) {
   const updated = await UserModel.findOneAndUpdate(filter, update)
   return updated
 }
 
-async function manageAdmin(filter: FilterQuery<User>, update: UpdateQuery<User>) {
+async function manageAdmin(filter: FilterQuery<IUser>, update: UpdateQuery<IUser>) {
   const updated = await UserModel.findOneAndUpdate(filter, update)
   return updated
 }
