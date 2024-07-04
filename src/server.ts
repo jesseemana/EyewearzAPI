@@ -42,7 +42,7 @@ app.use(errorHandler)
 async function main() {
   const server = app.listen(PORT, () => {
     database.connect()
-    log.info(`server listening at: http://localhost:${PORT}`)
+    log.info(`server started at http://localhost:${PORT}`)
   })
 
   const signals = ['SIGTERM', 'SIGINT']
