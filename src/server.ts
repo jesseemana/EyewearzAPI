@@ -1,8 +1,8 @@
 import 'dotenv/config'
-import express, { NextFunction, Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
-import { deserializeUser }from './middleware'
+import { deserializeUser, errorHandler }from './middleware'
 import { Database, log } from './utils'
 import { 
   authRoute, 
@@ -36,14 +36,8 @@ app.use('/api/v1/user', userRoute)
 app.use('/api/v1/products', productRoute)
 app.use('/api/v1/reservation', bookingRoute)
 
-// Asynchronous error handler
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(`An error occurred. ${err}`)
-  if (err.code === 11000) {
-    return res.status(400).send('Email already in use.')
-  }
-  return res.status(500).json({ msg: 'Internal Server Error' })
-})
+// Asynchronous error handling middleware
+app.use(errorHandler)
 
 async function main() {
   const server = app.listen(PORT, () => {
