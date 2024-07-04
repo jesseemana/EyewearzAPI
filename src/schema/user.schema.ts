@@ -14,7 +14,7 @@ export const userSchema = z.object({
     location: string({
       required_error: 'Location is required'
     }).trim(),
-    role: z.enum(['admin', 'user']),
+    admin: z.boolean().optional(),
     password: string({
       required_error: 'Password is required',
     }).min(8, "Must not be less than 8 characters.").max(24, "Cannot be more than 24 characters long."),
@@ -54,7 +54,10 @@ export const loginSchema = z.object({
   body: z.object({
     email: string({ 
       required_error: 'Email is required' 
-    }).email('Enter a valid email').trim().toLowerCase(),
+    })
+    .email('Enter a valid email')
+    .trim()
+    .toLowerCase(),
     password: string({
       required_error: 'Password is required',
     })
@@ -75,15 +78,23 @@ export const resetSchema = z.object({
   body: z.object({
     email: string({ 
       required_error: 'Email is required', 
-    }).email('Enter a valid email').trim().toLowerCase(),
+    })
+    .email('Enter a valid email')
+    .trim()
+    .toLowerCase(),
+    // .optional(),
     password: string({
       required_error: 'Please provide a password'
-    }).min(8, "Must not be less than 8 characters.")
-      .max(24, "Cannot be more than 24 characters long."),
+    })
+    .min(8, "Must not be less than 8 characters.")
+    .max(24, "Cannot be more than 24 characters long."),
+    // .optional(),
     confirm_password: string({
       required_error: 'Please confirm your password'
-    }).min(8, "Must not be less than 8 characters.")
-      .max(24, "Cannot be more than 24 characters long."),
+    })
+    .min(8, "Must not be less than 8 characters.")
+    .max(24, "Cannot be more than 24 characters long."),
+    // .optional(),
   }).refine((data) => data.password === data.confirm_password, {
     message: 'Passwords do not match',
     path: ['confirm_password'],

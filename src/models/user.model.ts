@@ -17,13 +17,9 @@ const user_schema = new Schema({
     required: true,
     unique: true, 
   },
+  admin: { type: Boolean, default: false, },
   password: { type: String, required: true, },
   location: { type: String, required: true, },
-  role: { 
-    type: String, 
-    enum: ['user', 'admin'], 
-    required: true, 
-  },
   reset_code: { type: Schema.Types.Mixed }
 })
 
