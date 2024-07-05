@@ -15,7 +15,6 @@ const product_schema = new Schema(
       required: true, 
       enum: ['sunglasses', 'prescription', 'blue light', 'kids'] 
     },
-    featured: { type: Boolean, required: true },
     gender: { 
       type: String, 
       required: true, 

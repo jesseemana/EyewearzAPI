@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { requireAdmin, upload, validateInput } from '../middleware'
 import { ProductController } from '../controllers'
-import { productSchema } from '../schema'
+import { productSchema, singleProductSchema } from '../schema/product.schema'
 
 const router = Router()
 
@@ -12,10 +12,22 @@ router.route('/')
     ProductController.createProductHandler
   )
 
-router.get('/featured', ProductController.getFeaturedProductsHandler)
-router.get('/sunglasses', ProductController.getSunGlassesHandler)
-router.get('/eyeglasses', ProductController.getEyeGlassesHandler)
-router.get('/:id', ProductController.getSingleProductHandler)
-router.post('/edit/:id', [requireAdmin], ProductController.editProductHandler)
+router.patch(
+  '/edit/:product_id', 
+  [requireAdmin, validateInput(productSchema)], 
+  ProductController.editProductHandler
+)
+
+router.get(
+  '/:product_id', 
+  validateInput(singleProductSchema), 
+  ProductController.getSingleProductHandler
+)
+
+router.get(
+  '/category/:category', 
+  validateInput(singleProductSchema), 
+  ProductController.getByCategory
+)
 
 export default router

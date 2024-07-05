@@ -12,13 +12,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-async function uploadPicture(file: Express.Multer.File): Promise<UploadResponse> {
-  try {
-    const image = file
-    const base64Image = Buffer.from(image.buffer).toString('base64')
-    const dataURI = `data:${image.mimetype};base64,${base64Image}`
 
-    const uploadResponse = await cloudinary.uploader.upload(dataURI, {
+async function uploadPicture(file: string): Promise<UploadResponse> {
+  try {
+    const uploadResponse = await cloudinary.uploader.upload(file, {
       transformation: [
         { width: 1000, crop: 'scale' },
         { quality: 'auto' },
