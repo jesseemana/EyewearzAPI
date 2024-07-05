@@ -4,7 +4,7 @@ import validateInput from './validate-input'
 import requireUser from './require-user'
 import requireAdmin from './require-admin'
 import deserializeUser from './auth.middleware'
-import errorHandler from './errorhandler'
+import errorHandler from './error-handler'
 
 export {
   errorHandler,
