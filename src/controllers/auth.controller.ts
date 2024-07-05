@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { AuthService, UserService }from '../services'
-import { LoginInput, ResetInput } from '../schema/user.schema'
+import { EmailType, LoginInput, ResetInput } from '../schema/user.schema'
 import { log, sendEmail } from '../utils'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -40,7 +40,7 @@ async function loginHandler(
 
 
 async function forgotPasswordHandler(
-  req: Request<{}, {}, ResetInput['body']>, 
+  req: Request<{}, {}, EmailType>, 
   res: Response
 ) {
   const { email } = req.body
@@ -51,10 +51,11 @@ async function forgotPasswordHandler(
   user.reset_code = uuidv4()
   await user.save()
 
-  // generate password reset link 
-  const link = `${process.env.BASE_URL as string}/${user._id.toString()}/reset/${user.reset_code}`
+  // generate password reset link
+  const BASE_URL = process.env.BASE_URL as string
+  const link = `${BASE_URL}/api/v1/auth/${user._id.toString()}/reset/${user.reset_code}`
 
-  log.info(`Password reset link: ${link}`)
+  // log.info(`Reset link: ${link}`)
 
   await sendEmail({
     to: email,
@@ -72,10 +73,10 @@ async function resetPasswordHandler(
   req: Request<ResetInput['params'], {}, ResetInput['body']>, 
   res: Response
 ) {
-  const { id, reset_code } = req.params
+  const { user_id, reset_code } = req.params
   const { password } = req.body
 
-  const user = await UserService.findUserById(id)
+  const user = await UserService.findUserById(user_id)
   if (!user) return res.status(404).json({ msg: 'User not found.' })
 
   if (user.reset_code === reset_code) {
