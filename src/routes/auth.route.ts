@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { AuthController } from '../controllers'
 import { limiter, requireUser, validateInput } from '../middleware'
 import { loginSchema, resetSchema } from '../schema'
+import { emailSchema } from '../schema/user.schema'
 
 const router = Router()
 
@@ -13,16 +14,18 @@ router.post(
 
 router.post(
   '/forgot-password', 
-  validateInput(resetSchema), 
+  validateInput(emailSchema), 
   AuthController.forgotPasswordHandler
 )
-  
+
 router.post(
-  '/:id/reset/:reset_code', 
+  '/:user_id/reset/:reset_code', 
   validateInput(resetSchema), 
   AuthController.resetPasswordHandler
 )
+
 router.get('/sessions', AuthController.getSessions)
+
 router.delete('/logout', requireUser, AuthController.logoutHandler)
 
 export default router
