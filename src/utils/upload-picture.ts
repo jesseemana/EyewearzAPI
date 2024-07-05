@@ -1,6 +1,10 @@
 import { v2 as cloudinary } from 'cloudinary'
 import log from './logger'
-import { UploadResponse } from '../types'
+
+type UploadResponse = {
+  image_path: string
+  cloudinary_id: string
+}
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
