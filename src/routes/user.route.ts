@@ -5,15 +5,15 @@ import { userSchema, updateUserSchema, resetSchema } from '../schema'
 
 const router = Router()
 
-router.route('/')
-  .get(UserController.getAllUsers)
-  .post(validateInput(userSchema), UserController.createUserHandler)
-
 router.get('/me', requireUser, UserController.getCurrentUserHandler)
+
+router.route('/')
+  .get(requireAdmin, UserController.getAllUsers)
+  .post(validateInput(userSchema), UserController.createUserHandler)
 
 router.patch(
   '/:user_id/update', 
-  [requireUser, validateInput(updateUserSchema)], 
+  [requireAdmin, validateInput(updateUserSchema)], 
   UserController.updateUserHandler
 )
 

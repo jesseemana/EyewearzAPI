@@ -16,17 +16,11 @@ async function createUserHandler(
   req: Request<{}, {}, UserInput>, 
   res: Response
 ) {
-  try {
-    const data = req.body
-    const user = await UserService.registerUser(data)
-    res.status(201).json({ 
-      msg: `New user ${user.first_name} ${user.last_name} has been created.` 
-    })
-  } catch (err: any) {
-    if (err.code === 11000) {
-      return res.status(409).json({ msg: 'Email already in use.' })
-    }
-  }
+  const data = req.body
+  const user = await UserService.registerUser(data)
+  res.status(201).json({ 
+    msg: `New user ${user.first_name} ${user.last_name} has been created.` 
+  })
 }
 
 async function updateUserHandler(
