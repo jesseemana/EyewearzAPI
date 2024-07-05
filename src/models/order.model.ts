@@ -1,27 +1,30 @@
-// import { User } from './user.model'
-// import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import mongoose, { Document, Schema, InferSchemaType } from 'mongoose'
 
-// export class Order {
+type OrderType = InferSchemaType<typeof order_schema> 
 
-//   @prop({ ref: () => User })
-//   user: Ref<User>
+export interface IOrder extends OrderType, Document {}
 
-//   @prop({ required: true })
-//   name: string
+const order_schema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId, 
+    ref: 'User',
+    required: true,
+  },
+  amount: { type: Number, required: true, },
+  deliveryDetails: {
+    name: { type: String, required: true, },
+    phone: { type: String, required: true, },
+    email: { type: String, required: true, },
+    location: { type: String, required: true, },
+  },
+  status: {
+    type: String,
+    enum: ['placed', 'paid', 'en-route', 'delivered'],
+    required: true,
+  },
+  createdAt: { type: Date, default: Date.now },
+})
 
-//   @prop({ required: true })
-//   email: string
+const OrderModel = mongoose.model('Order', order_schema)
 
-//   @prop({ required: true })
-//   phone: string
-
-//   @prop({ required: true })
-//   address: string
-
-//   @prop({ required: true })
-//   location: string
-
-// }
-
-// const OrderModel = getModelForClass(Order)
-// export default OrderModel
+export default OrderModel

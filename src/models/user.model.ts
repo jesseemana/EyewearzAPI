@@ -20,13 +20,12 @@ const user_schema = new Schema({
   admin: { type: Boolean, default: false, },
   password: { type: String, required: true, },
   location: { type: String, required: true, },
-  reset_code: { type: Schema.Types.Mixed }
+  reset_code: { type: Schema.Types.Mixed },
 })
 
 user_schema.pre('save', async function(next) {
   if (this.isModified('password')) { 
-    const hash = await argon2.hash(this.password)
-    this.password = hash
+    this.password = await argon2.hash(this.password)
     return next()
   }
 
@@ -36,8 +35,7 @@ user_schema.pre('save', async function(next) {
 user_schema.methods.verifyPassword = async function(candidate_password: string) {
   let user = this as IUser
   try {
-    const verified = await argon2.verify(user.password, candidate_password)
-    return verified
+    return await argon2.verify(user.password, candidate_password)
   } catch(err) {
     log.error(err, 'Failed to validate password')
     return false
