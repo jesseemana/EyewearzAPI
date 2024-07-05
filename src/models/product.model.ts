@@ -1,42 +1,33 @@
-// @ts-ignore
-import { v4 as uuidv4 } from 'uuid'
-import { getModelForClass, prop, index } from '@typegoose/typegoose'
+import mongoose, { Schema, Document, InferSchemaType } from 'mongoose'
 
-@index({ product_id: 1 })
+type ProductType= InferSchemaType<typeof product_schema>
 
-export class Product {
-  @prop({ required: true, default: uuidv4() })
-  product_id: string
+export interface IProduct extends ProductType, Document {}
 
-  @prop({ required: true })
-  name: string
-
-  @prop({ required: true })
-  image_path: string
-
-  @prop({ required: true })
-  cloudinary_id: string
-
-  @prop({ required: true })
-  price: string
-
-  @prop({ required: true })
-  category: string
-
-  @prop({ default: false })
-  featured: boolean
-
-  @prop({ required: true })
-  gender: string
-
-  @prop({ required: true })
-  description: string
-}
-
-const ProductModel = getModelForClass(Product, {
-  schemaOptions: {
-    timestamps: true,
+const product_schema = new Schema(
+  {
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    cloudinary_id: { type: String, required: true },
+    price: { type: Number, required: true },
+    category: { 
+      type: String, 
+      required: true, 
+      enum: ['sunglasses', 'prescription', 'blue light', 'kids'] 
+    },
+    featured: { type: Boolean, required: true },
+    gender: { 
+      type: String, 
+      required: true, 
+      enum: ['male', 'female', 'unisex'] 
+    },
+    description: { type: String, required: true },
+  },
+  {
+    timestamps: true
   }
-})
+)
+
+const ProductModel = mongoose.model<IProduct>('Product', product_schema)
 
 export default ProductModel
