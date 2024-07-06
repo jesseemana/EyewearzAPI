@@ -2,7 +2,7 @@ type PayloadType = {
   first_name: string,
   last_name: string,
   email: string,
-  currency: string,
+  currency: string
   amount: string,
   tx_ref: string,
 }
@@ -26,6 +26,7 @@ export async function initiatePayment(payload: PayloadType) {
 
 export async function verifyPayment(tx_ref: string) {
   const response = await fetch(`https://api.paychangu.com/verify-payment/${tx_ref}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${PAYCHANGU_SECRET_KEY!}`,

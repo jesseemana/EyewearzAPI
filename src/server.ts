@@ -29,7 +29,7 @@ app.get('/health', (_req: Request, res: Response) => {
 })
 
 // Routes
-app.use('/api/v1/orders', orderRoute)
+app.use('/api/v1/order', orderRoute)
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/user', userRoute)
 app.use('/api/v1/products', productRoute)
