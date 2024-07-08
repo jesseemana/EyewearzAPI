@@ -24,8 +24,6 @@ router.post(
   AuthController.resetPasswordHandler
 )
 
-router.get('/sessions', AuthController.getSessions)
-
 router.delete('/logout', requireUser, AuthController.logoutHandler)
 
 export default router
