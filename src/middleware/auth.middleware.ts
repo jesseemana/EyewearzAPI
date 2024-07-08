@@ -34,11 +34,9 @@ async function deserializeUser(req: Request, res: Response, next: NextFunction) 
       await authService.FindSessionById(decoded.session._id)
     ])
     
-    if (!user || !session) {
-      return res.status(401).json({ msg: 'Invalid user' })
+    if (!user || !session || !session.valid) {
+      return res.status(401).json({ msg: 'User or session is not valid' })
     }
-
-    if (!session.valid) return res.status(401).json({ msg: 'Session is invalid' })
 
     req.user = user.toObject()
     req.userId = user._id.toString()
