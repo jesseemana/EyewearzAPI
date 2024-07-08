@@ -7,10 +7,18 @@ type PayloadType = {
   tx_ref: string,
 }
 
+export type PaychanguResponseType = {
+  message: string
+  status: string
+  data: {
+    checkout_url: string
+  }
+}
+
 const PAYCHANGU_SECRET_KEY = process.env.PAYCHANGU_TEST_KEY as string
 
 export async function initiatePayment(payload: PayloadType) {
-  const response = await fetch(`https://api.paychangu.com/payment`, {
+  return await fetch(`https://api.paychangu.com/payment`, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -19,20 +27,14 @@ export async function initiatePayment(payload: PayloadType) {
       'Authorization': `Bearer ${PAYCHANGU_SECRET_KEY!}`,
     }
   })
-  
-  // @ts-ignore
-  return response.json()
 }
 
 export async function verifyPayment(tx_ref: string) {
-  const response = await fetch(`https://api.paychangu.com/verify-payment/${tx_ref}`, {
+  return await fetch(`https://api.paychangu.com/verify-payment/${tx_ref}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${PAYCHANGU_SECRET_KEY!}`,
     }
   })
-  
-  // @ts-ignore
-  return response.json()
 }
