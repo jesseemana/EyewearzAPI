@@ -84,13 +84,11 @@ async function resetPasswordHandler(
 
 
 async function logoutHandler(req: Request, res: Response) {
-  const user = req.userId
   const session_id = req.sessionId
 
   const session = await authService.FindSessionById(session_id)
-  if (!session) return res.status(401).json({ msg: 'Session not found' })
-  if (session.user.toString() !== user) return res.sendStatus(401)
-
+  if (!session) 
+    return res.status(401).json({ msg: 'Session not found' })
   await authService.DestroySession({ _id: session_id }, { valid: false })
 
   res.status(200).json({ msg: 'User logged out successfully.' })
