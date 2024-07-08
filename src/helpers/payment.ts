@@ -15,7 +15,7 @@ export type PaychanguResponseType = {
   }
 }
 
-const PAYCHANGU_SECRET_KEY = process.env.PAYCHANGU_TEST_KEY as string
+const PAYCHANGU_SECRET_KEY = process.env.PAYCHANGU_TEST_KEY!
 
 export async function initiatePayment(payload: PayloadType) {
   return await fetch(`https://api.paychangu.com/payment`, {
