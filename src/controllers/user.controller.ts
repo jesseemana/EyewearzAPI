@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { UpdateUserInput, UserInput } from '../schema/user.schema'
-import { UserService } from '../services'
+import { userService } from '../services'
 
 async function getAllUsers(_req: Request, res: Response) {
-  const users = await UserService.findAllUsers()
+  const users = await userService.FindAllUsers()
   res.status(200).json(users)
 }
 
@@ -17,7 +17,7 @@ async function createUserHandler(
   res: Response
 ) {
   const data = req.body
-  const user = await UserService.registerUser(data)
+  const user = await userService.RegisterUser(data)
   res.status(201).json({ 
     msg: `New user ${user.first_name} ${user.last_name} has been created.` 
   })
@@ -28,12 +28,11 @@ async function updateUserHandler(
   res: Response
 ) {
   const { user_id } = req.params
-  const body = req.body
 
-  const user = await UserService.findUserById(user_id)
+  const user = await userService.FindUserById(user_id)
   if (!user) return res.status(404).json({ msg: 'User not found!' })
 
-  await UserService.updateUser({ _id: user_id }, { ...body })
+  await userService.UpdateUser({ _id: user_id }, { ...req.body })
 
   res.status(200).json({ msg: 'User updated' })
 }

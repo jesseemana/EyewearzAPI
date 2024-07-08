@@ -4,7 +4,7 @@ import { signJwt } from '../utils'
 import { IUser } from '../models/user.model'
 import SessionModel, { ISession } from '../models/session.model'
 
-const findSessions = async () => {
+const FindSessions = async () => {
   const sessions = await SessionModel.find({})
     .sort({ createdAt: -1 })
     .limit(10)
@@ -12,17 +12,17 @@ const findSessions = async () => {
   return sessions
 }
 
-const createSession = async (data: ISession) => {
+const CreateSession = async (data: ISession) => {
   const session = await SessionModel.create(data)
   return session
 }
 
-async function findSessionById(id: string) {
+async function FindSessionById(id: string) {
   const session = await SessionModel.findById(id)
   return session
 }
 
-async function signAccessToken(user: IUser, session: ISession): Promise<string> {
+async function SignAccessToken(user: IUser, session: ISession): Promise<string> {
   const user_payload = omit(user.toJSON(), 'password', 'reset_code')
 
   const payload = { 
@@ -39,16 +39,16 @@ async function signAccessToken(user: IUser, session: ISession): Promise<string> 
   return access_token
 }
 
-async function destroySession(filter: FilterQuery<ISession>, update: UpdateQuery<ISession>) {
+async function DestroySession(filter: FilterQuery<ISession>, update: UpdateQuery<ISession>) {
   const updated = await SessionModel.updateOne(filter, update)
   if (updated) return true
   return false
 }
 
 export default {
-  signAccessToken, 
-  findSessions,
-  destroySession,
-  createSession, 
-  findSessionById,
+  SignAccessToken, 
+  FindSessions,
+  DestroySession,
+  CreateSession, 
+  FindSessionById,
 }

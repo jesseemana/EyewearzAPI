@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { uploadPicture } from '../utils'
 import { ProductInput, ProductParam } from '../schema/product.schema'
-import { ProductService } from '../services'
+import { productService } from '../services'
 
 const PRODUCT_LIMIT = 20
 
@@ -11,7 +11,7 @@ async function createProductHandler(
 ) {
   if (req.file) {
     const upload_response = await uploadPicture(req.file.path)
-    const product = await ProductService.createProduct({ 
+    const product = await productService.createProduct({ 
       ...req.body, 
       ...upload_response 
     })
@@ -25,9 +25,9 @@ async function createProductHandler(
 async function getAllProductsHandler(req: Request, res: Response) {
   const page = parseInt(req.query.page as string) || 1
   const skip = (page - 1) * PRODUCT_LIMIT
-  const total = await ProductService.countTotalProducts()
+  const total = await productService.countTotalProducts()
 
-  const products = await ProductService.getAllProducts(PRODUCT_LIMIT, skip)
+  const products = await productService.getAllProducts(PRODUCT_LIMIT, skip)
 
   res.status(200).json({
     products: products,
@@ -46,12 +46,12 @@ async function editProductHandler(
   const body = req.body
   const product_id = req.params.product_id as string
 
-  const product = await ProductService.findById(product_id)
+  const product = await productService.findById(product_id)
   if (!product) {
     return res.status(404).json({ msg: 'Product not found.' })
   }
   
-  await ProductService.editProduct({ _id: product_id }, { ...body })
+  await productService.editProduct({ _id: product_id }, { ...body })
 
   res.status(200).json({ msg: 'Product updated' })
 }
@@ -62,7 +62,7 @@ const getSingleProductHandler = async (
 ) => {
   const product_id = req.params.product_id as string
 
-  const product = await ProductService.findById(product_id)
+  const product = await productService.findById(product_id)
 
   if (!product) {
     return res.status(404).json({ 
@@ -88,9 +88,9 @@ async function getByCategory(
   // querying the category
   query['category'] = new RegExp(category, 'i')
 
-  const products = await ProductService.getByFilter({ limit: PRODUCT_LIMIT, skip, query })
+  const products = await productService.getByFilter({ limit: PRODUCT_LIMIT, skip, query })
 
-  const total = await ProductService.countByFilter(query)
+  const total = await productService.countByFilter(query)
 
   res.status(200).json({
     data: products,
